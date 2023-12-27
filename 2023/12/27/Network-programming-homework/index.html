@@ -1,322 +1,482 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		
-<title>聊聊(chatchat)基于SpringBoot的多人在线聊天室-hanana</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="shortcut icon" type="image/x-icon" href="/image/favicon.ico">
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="The Redefine Team">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link rel="stylesheet" href="/css/index.css">
-
-
-
-<meta name="keywords" content="Spring,">
-<meta name="description" content="多人在线聊天室">
-
-
-<script src="/js/jquery.min.js"></script>
-
-
-<script src="/js/index.js"></script>
-
-
-<script src="/js/fancybox.umd.js"></script>
-
-
-<script src="/js/fancybox-images.js"></script>
-
-
-<script src="/js/gitalk.min.js"></script>
-
-
-<script src="/js/hljs.min.js"></script>
- 
-<script>hljs.highlightAll();</script>
-
-	<meta name="generator" content="Hexo 7.0.0"></head>
-
-	<body>
-		
-	<div class="header">
-		<div class="header-top" id="header-top">
-			<div class="h-left">
-				<a href="/">
-					<img src="/image/logo.png" alt="Quiet">
-				</a>
-			</div>
-			<div class="h-right">
-				<ul>
-					
-						
-								<li>
-									<a href="/">
-										HOME
-									</a>
-									<span class="dot"></span>
-								</li>
-								
-									
-						
-								<li>
-									<a href="/archives">
-										ARCHIVE
-									</a>
-									<span class="dot"></span>
-								</li>
-								
-									
-						
-								<li>
-									<a href="/categories">
-										CATEGORIES
-									</a>
-									<span class="dot"></span>
-								</li>
-								
-									
-						
-								<li>
-									<a href="/tags">
-										TAGS
-									</a>
-									<span class="dot"></span>
-								</li>
-								
-									
-						
-								<li>
-									<a href="/links">
-										LINKS
-									</a>
-									<span class="dot"></span>
-								</li>
-								
-									
-						
-								<li>
-									<a href="/about">
-										ABOUT
-									</a>
-									<span class="dot"></span>
-								</li>
-								
-									
-				</ul>
-			</div>
-			<div class="h-right-close">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-					<path fill="none" d="M0 0h24v24H0z" />
-					<path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="rgba(68,68,68,1)" />
-				</svg>
-			</div>
-		</div>
-	</div>
-	<div class="sidebar">
-    <div class="topo">
-        <h2>hanana</h2>
-    </div>
-    <ul>
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2023/12/27/network-programming-homework/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="多人在线聊天室">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聊聊(chatchat)基于SpringBoot的多人在线聊天室">
+<meta property="og:url" content="http://example.com/2023/12/27/Network-programming-homework/index.html">
+<meta property="og:site_name" content="hanana">
+<meta property="og:description" content="多人在线聊天室">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.itbaima.net/images/450/image-20231227207792547.png">
+<meta property="og:image" content="https://image.itbaima.net/images/450/image-20231227204953572.png">
+<meta property="og:image" content="https://image.itbaima.net/images/450/image-2023122720941807.png">
+<meta property="og:image" content="https://image.itbaima.net/images/450/image-2023122720738318.png">
+<meta property="og:image" content="https://image.itbaima.net/images/450/image-20231227206804565.png">
+<meta property="og:image" content="https://image.itbaima.net/images/450/image-2023122720468919.png">
+<meta property="article:published_time" content="2023-12-27T12:33:36.000Z">
+<meta property="article:modified_time" content="2023-12-27T13:55:34.422Z">
+<meta property="article:author" content="hanana">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.itbaima.net/images/450/image-20231227207792547.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
         
-        <li>
-            <a href="/">HOME</a>
-        </li>
+            聊聊(chatchat)基于SpringBoot的多人在线聊天室 -
         
-        <li>
-            <a href="/archives">ARCHIVE</a>
-        </li>
-        
-        <li>
-            <a href="/categories">CATEGORIES</a>
-        </li>
-        
-        <li>
-            <a href="/tags">TAGS</a>
-        </li>
-        
-        <li>
-            <a href="/links">LINKS</a>
-        </li>
-        
-        <li>
-            <a href="/about">ABOUT</a>
-        </li>
-        
-    </ul>
-    <div class="my_foot">
-        
-        <a target="_blank" rel="noopener" href="https://github.com/hanana-ustc">
-            <img src="https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imggithub.png" alt="Quiet主题">
-        </a>
-        
-    </div>
-</div>
-<div class='shelter'>
-</div>
-<style>
-    .shelter{
-        background-color: #333;
-        opacity:0.5;
-        cursor: pointer;
-        display: none; 
+        Theme Redefine
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
         position: fixed;
-        left: 0;
-        top: 0; 
+        padding: 12px;
+        top: 0;
         right: 0;
         bottom: 0;
-        z-index: 1998;
-    }
-    .sidebar {
-        width: 66%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        right: -100%;
-        bottom: 0;
-        background: #fff;
-        z-index: 1999;
-        text-align: center;
-        box-shadow: -6px 0 20px rgba(98, 94, 94, .815);
-    }
-
-    .topo {
-        width: 100%;
-        height: 200px;
-        background: url(https://api.ixiaowai.cn/gqapi/gqapi.php) no-repeat;
-        background-size: 100% 100%;
-        position: relative;
-        display: flex;
-        align-items: flex-end
-    }
-
-    .topo h2 {
-        color: #fff;
-        z-index: 1;
-        position: relative;
-        margin: 0 0 10px 10px;
-        font-size: 1.2em;
-        box-sizing: border-box
-    }
-
-    .topo:before {
-        content: '';
-        background-image: url(/image/pattern.png);
-        background-repeat: repeat;
-        height: 100%;
         left: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-        z-index: 1
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
     }
 
-    .sidebar ul {
-        width: 100%;
-        margin-top: 50px
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
     }
 
-    .sidebar ul li {
-        height: 50px;
-        list-style: none;
-        font-size: 1.2em;
-        text-align: right;
-        margin-right: 10px
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
     }
 
-    .sidebar ul li a {
-        display: grid;
-        color: #5d606a;
-        text-overflow: ellipsis;
-        width: 100%;
-        text-decoration: none
-    }
-
-    .my_foot {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        position: absolute;
-        bottom: 0
-    }
-
-    .my_foot a {
-        text-decoration: none;
-        margin-right: 10px;
-        display: inline-block
-    }
-
-    .my_foot a img {
-        width: 30px;
-        height: 30px
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
     }
 </style>
 
-<script>
-    $( function () {
-	$( '.h-right-close>svg' )
-		.click( function () {
-			$( '.sidebar' )
-				.animate( {
-					right: "0"
-				}, 500 );
-			$( '.shelter' )
-				.fadeIn( "slow" )
-		} );
-	$( '.shelter' )
-		.click( function ( e ) {
-			$( '.sidebar' )
-				.animate( {
-					right: "-100%"
-				}, 500 );
-			$( '.shelter' )
-				.fadeOut( "slow" )
-		} )
-} )
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
 
-</script>
+    <h1 class="ml13">
+        Theme Redefine
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
 
-<div class="post">
-    <div class="post-header-background post-header-img"
-    style="background: url('https://api.ixiaowai.cn/gqapi/gqapi.php')" 
->
-    <div class="post-header-background-content">
-        <ul class="post-header-tag">
-            
-            
-            <li><a href="/tags/Spring">Spring</a></li>
-            
-            
-        </ul>
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
         
-        <h1>聊聊(chatchat)基于SpringBoot的多人在线聊天室</h1>
-        <div class="post-header-info">
-            <div class="post-header-info-author">
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Theme Redefine","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
                 
-                    <svg t="1604839279282" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                        xmlns="http://www.w3.org/2000/svg" p-id="2901" width="20" height="20">
-                        <path
-                            d="M513 956.3c-247.7 0-448-200.3-448-448S265.3 66.2 513 66.2s448 200.3 448 448-200.3 442.1-448 442.1z m0-830.9c-212.2 0-388.8 170.7-388.8 388.8C124.2 726.3 294.9 903 513 903c212.2 0 388.8-170.7 388.8-388.8S725.2 125.4 513 125.4z m0 430.2c-94.2 0-170.7-76.5-170.7-170.7S418.8 207.8 513 207.8s170.7 76.5 170.7 170.7S607.2 555.6 513 555.6z m0-289.1c-64.6 0-112 52.8-112 112s47.4 117.9 112 117.9 112-52.8 112-112-47.4-117.9-112-117.9z m0 689.8c-135.7 0-259-58.7-341.9-158.9l-11.8-17.8 11.8-17.8c76.5-117.9 206.2-188.5 347.8-188.5 135.7 0 265 64.6 341.9 182.6l11.8 17.8-11.8 17.8C778 897.1 648.7 956.3 513 956.3zM230.3 773.2C300.9 849.7 406.9 897 513 897c112 0 218.1-47.4 288.6-129.8-70.5-88.2-170.7-135.6-282.7-135.6s-218.1 53.3-288.6 141.6z"
-                            p-id="2902" fill="#ffffff"></path>
-                    </svg>
+                Theme Redefine
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
                     
-                <span class="post-header-info-author-text"> <a href="../../about">hanana</a></span>
-                <div class="post-header-info-author-categories">
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
                     
-                         <a href="../../categories/项目案例/" target="_blank" >项目案例</a>
                     
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
                 </div>
-                <p>2023-12-27 20:33:36</p>
             </div>
         </div>
     </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
 </div>
-    <div class="post-content" id="content">
-  
-  <div id="article" class="post-content-info">
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/image/text-image.png" alt="聊聊(chatchat)基于SpringBoot的多人在线聊天室" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">聊聊(chatchat)基于SpringBoot的多人在线聊天室</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">The Redefine Team</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-12-27 20:33:36</span>
+        <span class="mobile">2023-12-27 20:33:36</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-12-27 21:55:34</span>
+            <span class="mobile">2023-12-27 21:55:34</span>
+            <span class="hover-info">更新</span>
+        </span>
     
 
-    <h2 id="一、项目简介"><a href="#一、项目简介" class="headerlink" title="一、项目简介"></a>一、项目简介</h2><h3 id="1-功能介绍"><a href="#1-功能介绍" class="headerlink" title="1.功能介绍"></a>1.功能介绍</h3><p>本项目实现了一个多人在线聊天室，拥有以下功能。</p>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E9%A1%B9%E7%9B%AE%E6%A1%88%E4%BE%8B/">项目案例</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Spring/">Spring</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="一、项目简介"><a href="#一、项目简介" class="headerlink" title="一、项目简介"></a>一、项目简介</h2><h3 id="1-功能介绍"><a href="#1-功能介绍" class="headerlink" title="1.功能介绍"></a>1.功能介绍</h3><p>本项目实现了一个多人在线聊天室，拥有以下功能。</p>
 <ul>
 <li>支持用户账号密码登录、注册。</li>
 <li>实时发起群聊或单独聊天。</li>
@@ -328,7 +488,7 @@
 <p>前端基于Vue3框架，使用Element-Plus组件库、Axios、vue-router、pinia等技术开发。</p>
 <p>后端基于Spring Boot 3.1.4框架，采用Mybatis-Plus作为持久层框架，采用Spring Security管理页面权限访问，采用Spring websocket实现实时聊天功能,并引入lombok、fastjson2、spring validation等开发工具。</p>
 <h3 id="3-代码仓库地址"><a href="#3-代码仓库地址" class="headerlink" title="3.代码仓库地址"></a>3.代码仓库地址</h3><blockquote>
-<p><a target="_blank" rel="noopener" href="https://gitee.com/zhiy-yan/chatchat">zhiy yan&#x2F;chatchat (gitee.com)</a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://gitee.com/zhiy-yan/chatchat" >zhiy yan&#x2F;chatchat (gitee.com) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 </blockquote>
 <h2 id="二、后端设计与实现"><a href="#二、后端设计与实现" class="headerlink" title="二、后端设计与实现"></a>二、后端设计与实现</h2><h3 id="1-项目架构"><a href="#1-项目架构" class="headerlink" title="1.项目架构"></a>1.项目架构</h3><p>项目架构如下所示。对各包名进行简要说明。</p>
 <ul>
@@ -352,20 +512,21 @@
 <li>socket:WebSocket管理类包</li>
 <li>utils:工具包</li>
 </ul>
-<img src="https://image.itbaima.net/images/450/image-20231227207792547.png" alt="image-20231225112558804" style="zoom:50%;" />
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://image.itbaima.net/images/450/image-20231227207792547.png"
+                      alt="image-20231225112558804" style="zoom:50%;" 
+                >
 
 <h3 id="2-数据库架构"><a href="#2-数据库架构" class="headerlink" title="2.数据库架构"></a>2.数据库架构</h3><p>根据需求，建立两张表，一张为账户表，存储注册用户的账户信息，另一张为聊天信息存储表，存储发送的聊天信息。所建表如下所示。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-number">2</span><br>    <span class="hljs-number">3</span><br>    <span class="hljs-number">4</span><br>    <span class="hljs-number">5</span><br>    <span class="hljs-number">6</span><br>    <span class="hljs-number">7</span><br></code></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs mysql">-- 创建库<br>create database if not exists chatchat;<br><br>-- 切换库<br>use chat;<br><br>-- 创建用户表<br>drop table if exists db_account;<br>create table db_account<br>(<br>    id int auto_increment comment &#x27;id&#x27; primary key,<br>    username varchar(128) not null comment &#x27;用户名&#x27;,<br>    password varchar(128) not null comment &#x27;密码&#x27;,<br>    email varchar(128) null comment &#x27;电子邮箱&#x27;,<br>    avatar varchar(512) null comment &#x27;用户链接&#x27;,<br>	role varchar(128) not null comment &#x27;用户权限&#x27;,<br>    register_time datetime default CURRENT_TIMESTAMP not null comment &#x27;注册时间&#x27;<br>) comment &#x27;账户表&#x27; collate = utf8mb4_unicode_ci;<br><br>-- 聊天记录表<br>drop table if exists db_message;<br>create table db_message<br>(<br>    id int auto_increment comment &#x27;id&#x27; primary key,<br>    send_id int not null comment &#x27;发送者id&#x27;,<br>    to_id int not null comment &#x27;发送到id,0表示群发&#x27;,<br>    message varchar(512) not null comment &#x27;聊天信息&#x27;<br>) comment &#x27;聊天记录&#x27; collate = utf8mb4_unicode_ci;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><code class="hljs mysql">-- 创建库<br>create database if not exists chatchat;<br><br>-- 切换库<br>use chat;<br><br>-- 创建用户表<br>drop table if exists db_account;<br>create table db_account<br>(<br>    id int auto_increment comment &#x27;id&#x27; primary key,<br>    username varchar(128) not null comment &#x27;用户名&#x27;,<br>    password varchar(128) not null comment &#x27;密码&#x27;,<br>    email varchar(128) null comment &#x27;电子邮箱&#x27;,<br>    avatar varchar(512) null comment &#x27;用户链接&#x27;,<br>	role varchar(128) not null comment &#x27;用户权限&#x27;,<br>    register_time datetime default CURRENT_TIMESTAMP not null comment &#x27;注册时间&#x27;<br>) comment &#x27;账户表&#x27; collate = utf8mb4_unicode_ci;<br><br>-- 聊天记录表<br>drop table if exists db_message;<br>create table db_message<br>(<br>    id int auto_increment comment &#x27;id&#x27; primary key,<br>    send_id int not null comment &#x27;发送者id&#x27;,<br>    to_id int not null comment &#x27;发送到id,0表示群发&#x27;,<br>    message varchar(512) not null comment &#x27;聊天信息&#x27;<br>) comment &#x27;聊天记录&#x27; collate = utf8mb4_unicode_ci;<br></code></pre></td></tr></table></figure></div>
 
 <h3 id="3-项目依赖"><a href="#3-项目依赖" class="headerlink" title="3.项目依赖"></a>3.项目依赖</h3><p>本项目使用maven架构进行项目管理。所用到的依赖如下所示。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.1.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>/&gt;</span> <span class="hljs-comment">&lt;!-- lookup parent from repository --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.example<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>chatchat-backend<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>chatchat-backend<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>chatchat-backend<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>21<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring security--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-security<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring web--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--mysql jdbc--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-j<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--lombok--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">optional</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">optional</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring  JUnit--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring  security JUnit--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.security<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-security-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--fastjson2--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba.fastjson2<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>fastjson2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.0.37<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--Mybatis-Plus--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.3.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring  validation--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring  websocket--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-websocket<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">excludes</span>&gt;</span><br>                        <span class="hljs-tag">&lt;<span class="hljs-name">exclude</span>&gt;</span><br>                            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                        <span class="hljs-tag">&lt;/<span class="hljs-name">exclude</span>&gt;</span><br>                    <span class="hljs-tag">&lt;/<span class="hljs-name">excludes</span>&gt;</span><br>                <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.1.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>/&gt;</span> <span class="hljs-comment">&lt;!-- lookup parent from repository --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.example<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>chatchat-backend<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>chatchat-backend<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>chatchat-backend<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>21<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring security--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-security<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring web--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--mysql jdbc--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-j<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--lombok--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">optional</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">optional</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring  JUnit--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring  security JUnit--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.security<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-security-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--fastjson2--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba.fastjson2<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>fastjson2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.0.37<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--Mybatis-Plus--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.3.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring  validation--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--spring  websocket--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-websocket<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">excludes</span>&gt;</span><br>                        <span class="hljs-tag">&lt;<span class="hljs-name">exclude</span>&gt;</span><br>                            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>                            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>                        <span class="hljs-tag">&lt;/<span class="hljs-name">exclude</span>&gt;</span><br>                    <span class="hljs-tag">&lt;/<span class="hljs-name">excludes</span>&gt;</span><br>                <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span><br></code></pre></td></tr></table></figure></div>
 
 <h3 id="4-全局配置"><a href="#4-全局配置" class="headerlink" title="4.全局配置"></a>4.全局配置</h3><p>主要是配置Spring security，控制前端对业务逻辑接口的访问。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SecurityConfiguration</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    AccountService accountService;<br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> SecurityFilterChain <span class="hljs-title function_">filterChain</span><span class="hljs-params">(HttpSecurity httpSecurity)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-keyword">return</span> httpSecurity<br>                .authorizeHttpRequests(conf -&gt; conf<br>                        .requestMatchers(<span class="hljs-string">&quot;/api/auth/**&quot;</span>,<span class="hljs-string">&quot;/error&quot;</span>, <span class="hljs-string">&quot;/websocket/**&quot;</span>).permitAll()<br>                        .anyRequest().authenticated())<br>                .formLogin(conf-&gt;conf<br>                        .loginProcessingUrl(<span class="hljs-string">&quot;/api/auth/login&quot;</span>)<br>                        .successHandler(<span class="hljs-built_in">this</span>::onAuthenticationSuccess)<br>                        .failureHandler(<span class="hljs-built_in">this</span>::onAuthenticationFailure)<br>                )<br>                .logout(conf-&gt;conf<br>                        .logoutUrl(<span class="hljs-string">&quot;/api/auth/logout&quot;</span>)<br>                        .logoutSuccessHandler(<span class="hljs-built_in">this</span>::onLogoutSuccess)<br>                )<br>                .exceptionHandling(conf -&gt; conf<br>                        .authenticationEntryPoint(<span class="hljs-built_in">this</span>::onUnauthorized)<br>                )<br>                .csrf(AbstractHttpConfigurer::disable)<br>                .build();<br>    &#125;<br>    <span class="hljs-comment">/*登录成功返回用户信息给客户端*/</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onAuthenticationSuccess</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>        response.setContentType(<span class="hljs-string">&quot;application/json;charset=utf-8&quot;</span>);<br>        User user=(User) authentication.getPrincipal();<br>        <span class="hljs-type">Account</span> <span class="hljs-variable">account</span> <span class="hljs-operator">=</span> accountService.findAccountByUsername(user.getUsername());<br>        <span class="hljs-type">AccountVO</span> <span class="hljs-variable">vo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AccountVO</span>(account.getId(),user.getUsername(),account.getRole(), account.getAvatar(), account.getRegisterTime());<br>        response.getWriter().println(RestBean.success(vo).asJSONString());<br>    &#125;<br>    <span class="hljs-comment">/*登录失败返回失败信息*/</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onAuthenticationFailure</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)</span> <span class="hljs-keyword">throws</span> IOException, ServletException&#123;<br>        response.setContentType(<span class="hljs-string">&quot;application/json;charset=utf-8&quot;</span>);<br>        response.getWriter().println(RestBean.unAuthorized(exception.getMessage()).asJSONString());<br>    &#125;<br>    <span class="hljs-comment">/*退出登录成功*/</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onLogoutSuccess</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br><br>    &#125;<br>    <span class="hljs-comment">/*未认证访问其他页面返回失败信息*/</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onUnauthorized</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)</span> <span class="hljs-keyword">throws</span> IOException, ServletException&#123;<br>        response.getWriter().write(RestBean.unAuthorized(exception.getMessage()).asJSONString());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SecurityConfiguration</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    AccountService accountService;<br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> SecurityFilterChain <span class="hljs-title function_">filterChain</span><span class="hljs-params">(HttpSecurity httpSecurity)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-keyword">return</span> httpSecurity<br>                .authorizeHttpRequests(conf -&gt; conf<br>                        .requestMatchers(<span class="hljs-string">&quot;/api/auth/**&quot;</span>,<span class="hljs-string">&quot;/error&quot;</span>, <span class="hljs-string">&quot;/websocket/**&quot;</span>).permitAll()<br>                        .anyRequest().authenticated())<br>                .formLogin(conf-&gt;conf<br>                        .loginProcessingUrl(<span class="hljs-string">&quot;/api/auth/login&quot;</span>)<br>                        .successHandler(<span class="hljs-built_in">this</span>::onAuthenticationSuccess)<br>                        .failureHandler(<span class="hljs-built_in">this</span>::onAuthenticationFailure)<br>                )<br>                .logout(conf-&gt;conf<br>                        .logoutUrl(<span class="hljs-string">&quot;/api/auth/logout&quot;</span>)<br>                        .logoutSuccessHandler(<span class="hljs-built_in">this</span>::onLogoutSuccess)<br>                )<br>                .exceptionHandling(conf -&gt; conf<br>                        .authenticationEntryPoint(<span class="hljs-built_in">this</span>::onUnauthorized)<br>                )<br>                .csrf(AbstractHttpConfigurer::disable)<br>                .build();<br>    &#125;<br>    <span class="hljs-comment">/*登录成功返回用户信息给客户端*/</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onAuthenticationSuccess</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br>        response.setContentType(<span class="hljs-string">&quot;application/json;charset=utf-8&quot;</span>);<br>        User user=(User) authentication.getPrincipal();<br>        <span class="hljs-type">Account</span> <span class="hljs-variable">account</span> <span class="hljs-operator">=</span> accountService.findAccountByUsername(user.getUsername());<br>        <span class="hljs-type">AccountVO</span> <span class="hljs-variable">vo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AccountVO</span>(account.getId(),user.getUsername(),account.getRole(), account.getAvatar(), account.getRegisterTime());<br>        response.getWriter().println(RestBean.success(vo).asJSONString());<br>    &#125;<br>    <span class="hljs-comment">/*登录失败返回失败信息*/</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onAuthenticationFailure</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)</span> <span class="hljs-keyword">throws</span> IOException, ServletException&#123;<br>        response.setContentType(<span class="hljs-string">&quot;application/json;charset=utf-8&quot;</span>);<br>        response.getWriter().println(RestBean.unAuthorized(exception.getMessage()).asJSONString());<br>    &#125;<br>    <span class="hljs-comment">/*退出登录成功*/</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onLogoutSuccess</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Authentication authentication)</span> <span class="hljs-keyword">throws</span> IOException, ServletException &#123;<br><br>    &#125;<br>    <span class="hljs-comment">/*未认证访问其他页面返回失败信息*/</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onUnauthorized</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)</span> <span class="hljs-keyword">throws</span> IOException, ServletException&#123;<br>        response.getWriter().write(RestBean.unAuthorized(exception.getMessage()).asJSONString());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></div>
 
 
 
@@ -374,41 +535,41 @@
 <li><p>db_account访问。</p>
 <ul>
 <li><p>AccountMapper。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Mapper</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AccountMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;Account&gt; &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Mapper</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AccountMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;Account&gt; &#123;<br>&#125;<br></code></pre></td></tr></table></figure></div>
 </li>
 <li><p>AccountService接口。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AccountService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;Account&gt;, UserDetailsService &#123;<br>    <span class="hljs-keyword">public</span> Account <span class="hljs-title function_">findAccountByUsername</span><span class="hljs-params">(String username)</span>;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">registerAccount</span><span class="hljs-params">(RegisterVO RegisterVO)</span>;<br>    <span class="hljs-keyword">public</span> List&lt;FriendsVO&gt; <span class="hljs-title function_">findFriendsById</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AccountService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;Account&gt;, UserDetailsService &#123;<br>    <span class="hljs-keyword">public</span> Account <span class="hljs-title function_">findAccountByUsername</span><span class="hljs-params">(String username)</span>;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">registerAccount</span><span class="hljs-params">(RegisterVO RegisterVO)</span>;<br>    <span class="hljs-keyword">public</span> List&lt;FriendsVO&gt; <span class="hljs-title function_">findFriendsById</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span>;<br>&#125;<br></code></pre></td></tr></table></figure></div>
 </li>
 <li><p>AccountServiceImpl实现类。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AccountServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;AccountMapper, Account&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AccountService</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    PasswordEncoder encoder;<br>    <span class="hljs-meta">@Resource</span><br>    MessageService messageService;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 实现UserDetailsService,实现用户登录</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> username 账户名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> UserDetails</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> UsernameNotFoundException 用户未找到异常</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> UserDetails <span class="hljs-title function_">loadUserByUsername</span><span class="hljs-params">(String username)</span> <span class="hljs-keyword">throws</span> UsernameNotFoundException &#123;<br>        <span class="hljs-type">Account</span> <span class="hljs-variable">account</span> <span class="hljs-operator">=</span> findAccountByUsername(username);<br>        <span class="hljs-keyword">if</span>(account == <span class="hljs-literal">null</span>)<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UsernameNotFoundException</span>(<span class="hljs-string">&quot;用户名或密码错误&quot;</span>);<br>        <span class="hljs-keyword">return</span> User<br>                .withUsername(username)<br>                .password(account.getPassword())<br>                .roles(account.getRole())<br>                .build();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据用户名查询对应账户</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> username 账户名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> Account账户</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Account <span class="hljs-title function_">findAccountByUsername</span><span class="hljs-params">(String username)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.query()<br>                .eq(<span class="hljs-string">&quot;username&quot;</span>, username)<br>                .one();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 账户注册</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> registerVO 注册实体类vo</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> success null</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">registerAccount</span><span class="hljs-params">(RegisterVO registerVO)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">password</span> <span class="hljs-operator">=</span> encoder.encode(registerVO.getPassword());<br>        <span class="hljs-type">Account</span> <span class="hljs-variable">account</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Account</span>(<span class="hljs-literal">null</span>, registerVO.getUsername(), password, registerVO.getEmail(),<br>                <span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.save(account))<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;内部错误，请联系管理员&quot;</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据用户id查询好友列表</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 好友列表</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;FriendsVO&gt; <span class="hljs-title function_">findFriendsById</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span> &#123;<br>        List&lt;Account&gt; accounts = <span class="hljs-built_in">this</span>.query()<br>                .ne(<span class="hljs-string">&quot;id&quot;</span>, id)<br>                .list();<br>        List&lt;FriendsVO&gt; friendsVOS = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span> (Account account : accounts) &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> messageService.getLastMessageById(id, account.getId());<br>            friendsVOS.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">FriendsVO</span>(account.getId(), account.getUsername(), account.getAvatar(), message));<br>        &#125;<br>        <span class="hljs-keyword">return</span> friendsVOS;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AccountServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;AccountMapper, Account&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AccountService</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    PasswordEncoder encoder;<br>    <span class="hljs-meta">@Resource</span><br>    MessageService messageService;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 实现UserDetailsService,实现用户登录</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> username 账户名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> UserDetails</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> UsernameNotFoundException 用户未找到异常</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> UserDetails <span class="hljs-title function_">loadUserByUsername</span><span class="hljs-params">(String username)</span> <span class="hljs-keyword">throws</span> UsernameNotFoundException &#123;<br>        <span class="hljs-type">Account</span> <span class="hljs-variable">account</span> <span class="hljs-operator">=</span> findAccountByUsername(username);<br>        <span class="hljs-keyword">if</span>(account == <span class="hljs-literal">null</span>)<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UsernameNotFoundException</span>(<span class="hljs-string">&quot;用户名或密码错误&quot;</span>);<br>        <span class="hljs-keyword">return</span> User<br>                .withUsername(username)<br>                .password(account.getPassword())<br>                .roles(account.getRole())<br>                .build();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据用户名查询对应账户</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> username 账户名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> Account账户</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Account <span class="hljs-title function_">findAccountByUsername</span><span class="hljs-params">(String username)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.query()<br>                .eq(<span class="hljs-string">&quot;username&quot;</span>, username)<br>                .one();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 账户注册</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> registerVO 注册实体类vo</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> success null</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">registerAccount</span><span class="hljs-params">(RegisterVO registerVO)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">password</span> <span class="hljs-operator">=</span> encoder.encode(registerVO.getPassword());<br>        <span class="hljs-type">Account</span> <span class="hljs-variable">account</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Account</span>(<span class="hljs-literal">null</span>, registerVO.getUsername(), password, registerVO.getEmail(),<br>                <span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-literal">null</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">this</span>.save(account))<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;内部错误，请联系管理员&quot;</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据用户id查询好友列表</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 好友列表</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;FriendsVO&gt; <span class="hljs-title function_">findFriendsById</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span> &#123;<br>        List&lt;Account&gt; accounts = <span class="hljs-built_in">this</span>.query()<br>                .ne(<span class="hljs-string">&quot;id&quot;</span>, id)<br>                .list();<br>        List&lt;FriendsVO&gt; friendsVOS = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span> (Account account : accounts) &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> messageService.getLastMessageById(id, account.getId());<br>            friendsVOS.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">FriendsVO</span>(account.getId(), account.getUsername(), account.getAvatar(), message));<br>        &#125;<br>        <span class="hljs-keyword">return</span> friendsVOS;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></div></li>
 </ul>
 </li>
 <li><p>db_message访问。</p>
 <ul>
 <li><p>MessageMapper。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Mapper</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MessageMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;Message&gt; &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Mapper</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MessageMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;Message&gt; &#123;<br>&#125;<br></code></pre></td></tr></table></figure></div>
 </li>
 <li><p>MessageService接口。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MessageService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;Message&gt; &#123;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getLastMessageById</span><span class="hljs-params">(<span class="hljs-type">int</span> userId, <span class="hljs-type">int</span> sendId)</span>;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">saveMessageById</span><span class="hljs-params">(<span class="hljs-type">int</span> id, <span class="hljs-type">int</span> toId, String message)</span>;<br>    <span class="hljs-keyword">public</span> List&lt;MessageVO&gt; <span class="hljs-title function_">getMessage</span><span class="hljs-params">(<span class="hljs-type">int</span> id, <span class="hljs-type">int</span> sid)</span>;<br>    <span class="hljs-keyword">public</span> List&lt;MessageVO&gt; <span class="hljs-title function_">getAllMessage</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MessageService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;Message&gt; &#123;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getLastMessageById</span><span class="hljs-params">(<span class="hljs-type">int</span> userId, <span class="hljs-type">int</span> sendId)</span>;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">saveMessageById</span><span class="hljs-params">(<span class="hljs-type">int</span> id, <span class="hljs-type">int</span> toId, String message)</span>;<br>    <span class="hljs-keyword">public</span> List&lt;MessageVO&gt; <span class="hljs-title function_">getMessage</span><span class="hljs-params">(<span class="hljs-type">int</span> id, <span class="hljs-type">int</span> sid)</span>;<br>    <span class="hljs-keyword">public</span> List&lt;MessageVO&gt; <span class="hljs-title function_">getAllMessage</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span>;<br>&#125;<br></code></pre></td></tr></table></figure></div>
 </li>
 <li><p>MessageServiceImpl实现类。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MessageServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;MessageMapper, Message&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">MessageService</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据用户id与发送者id查询最新消息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> userId 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sendId 发送者id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 最新消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getLastMessageById</span><span class="hljs-params">(<span class="hljs-type">int</span> userId, <span class="hljs-type">int</span> sendId)</span> &#123;<br>        List&lt;Message&gt; messages =  <span class="hljs-built_in">this</span>.query()<br>                .eq(<span class="hljs-string">&quot;to_id&quot;</span>, userId)<br>                .eq(<span class="hljs-string">&quot;send_id&quot;</span>, sendId)<br>                .or(i -&gt; i.eq(<span class="hljs-string">&quot;to_id&quot;</span>, sendId).eq(<span class="hljs-string">&quot;send_id&quot;</span>, userId))<br>                .list();<br>        <span class="hljs-keyword">if</span> (messages.isEmpty())<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">return</span> messages.get(messages.size() - <span class="hljs-number">1</span>).getMessage();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 保存聊天信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> toId 去往id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> message 聊天信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> success null</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">saveMessageById</span><span class="hljs-params">(<span class="hljs-type">int</span> id, <span class="hljs-type">int</span> toId, String message)</span> &#123;<br>        <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">this</span>.save(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Message</span>(<span class="hljs-literal">null</span>, id, toId, message)))<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;信息保存失败&quot;</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取聊天信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sid 发送者id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 聊天信息表</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;MessageVO&gt; <span class="hljs-title function_">getMessage</span><span class="hljs-params">(<span class="hljs-type">int</span> id, <span class="hljs-type">int</span> sid)</span> &#123;<br>        List&lt;Message&gt; messages = <span class="hljs-built_in">this</span>.query()<br>                .eq(<span class="hljs-string">&quot;send_id&quot;</span>, id)<br>                .eq(<span class="hljs-string">&quot;to_id&quot;</span>, sid)<br>                .or(i -&gt; i.eq(<span class="hljs-string">&quot;to_id&quot;</span>, id).eq(<span class="hljs-string">&quot;send_id&quot;</span>, sid))<br>                .list();<br>        List&lt;MessageVO&gt; messageVOList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span> (Message message : messages) &#123;<br>            messageVOList.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MessageVO</span>(message.getId(),message.getSendId(),message.getToId(),message.getMessage()));<br>        &#125;<br>        <span class="hljs-keyword">return</span> messageVOList;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取群聊信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 群聊信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;MessageVO&gt; <span class="hljs-title function_">getAllMessage</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span> &#123;<br>        List&lt;Message&gt; messages = <span class="hljs-built_in">this</span>.query()<br>                .eq(<span class="hljs-string">&quot;to_id&quot;</span>, <span class="hljs-number">0</span>)<br>                .list();<br>        List&lt;MessageVO&gt; messageVOList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span> (Message message : messages) &#123;<br>            messageVOList.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MessageVO</span>(message.getId(),message.getSendId(),message.getToId(),message.getMessage()));<br>        &#125;<br>        <span class="hljs-keyword">return</span> messageVOList;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MessageServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;MessageMapper, Message&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">MessageService</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据用户id与发送者id查询最新消息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> userId 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sendId 发送者id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 最新消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getLastMessageById</span><span class="hljs-params">(<span class="hljs-type">int</span> userId, <span class="hljs-type">int</span> sendId)</span> &#123;<br>        List&lt;Message&gt; messages =  <span class="hljs-built_in">this</span>.query()<br>                .eq(<span class="hljs-string">&quot;to_id&quot;</span>, userId)<br>                .eq(<span class="hljs-string">&quot;send_id&quot;</span>, sendId)<br>                .or(i -&gt; i.eq(<span class="hljs-string">&quot;to_id&quot;</span>, sendId).eq(<span class="hljs-string">&quot;send_id&quot;</span>, userId))<br>                .list();<br>        <span class="hljs-keyword">if</span> (messages.isEmpty())<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">return</span> messages.get(messages.size() - <span class="hljs-number">1</span>).getMessage();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 保存聊天信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> toId 去往id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> message 聊天信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> success null</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">saveMessageById</span><span class="hljs-params">(<span class="hljs-type">int</span> id, <span class="hljs-type">int</span> toId, String message)</span> &#123;<br>        <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">this</span>.save(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Message</span>(<span class="hljs-literal">null</span>, id, toId, message)))<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;信息保存失败&quot;</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取聊天信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sid 发送者id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 聊天信息表</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;MessageVO&gt; <span class="hljs-title function_">getMessage</span><span class="hljs-params">(<span class="hljs-type">int</span> id, <span class="hljs-type">int</span> sid)</span> &#123;<br>        List&lt;Message&gt; messages = <span class="hljs-built_in">this</span>.query()<br>                .eq(<span class="hljs-string">&quot;send_id&quot;</span>, id)<br>                .eq(<span class="hljs-string">&quot;to_id&quot;</span>, sid)<br>                .or(i -&gt; i.eq(<span class="hljs-string">&quot;to_id&quot;</span>, id).eq(<span class="hljs-string">&quot;send_id&quot;</span>, sid))<br>                .list();<br>        List&lt;MessageVO&gt; messageVOList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span> (Message message : messages) &#123;<br>            messageVOList.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MessageVO</span>(message.getId(),message.getSendId(),message.getToId(),message.getMessage()));<br>        &#125;<br>        <span class="hljs-keyword">return</span> messageVOList;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取群聊信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id 用户id</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 群聊信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> List&lt;MessageVO&gt; <span class="hljs-title function_">getAllMessage</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span> &#123;<br>        List&lt;Message&gt; messages = <span class="hljs-built_in">this</span>.query()<br>                .eq(<span class="hljs-string">&quot;to_id&quot;</span>, <span class="hljs-number">0</span>)<br>                .list();<br>        List&lt;MessageVO&gt; messageVOList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span> (Message message : messages) &#123;<br>            messageVOList.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MessageVO</span>(message.getId(),message.getSendId(),message.getToId(),message.getMessage()));<br>        &#125;<br>        <span class="hljs-keyword">return</span> messageVOList;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></div></li>
 </ul>
 </li>
 </ul>
 <h3 id="6-业务逻辑层"><a href="#6-业务逻辑层" class="headerlink" title="6.业务逻辑层"></a>6.业务逻辑层</h3><p>业务逻辑层是数据访问层与表示层的桥梁。本项目暴露出很多使用的接口供前端进行调用。</p>
 <ul>
 <li><p>AccountController。主要是实现对好友列表的访问。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api/user&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AccountController</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    AccountService accountService;<br>    <span class="hljs-meta">@GetMapping(&quot;/friends&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;List&lt;FriendsVO&gt;&gt; <span class="hljs-title function_">getFriend</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam</span> <span class="hljs-type">int</span> id)</span>&#123;<br>        <span class="hljs-keyword">return</span> RestBean.success(accountService.findFriendsById(id));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api/user&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AccountController</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    AccountService accountService;<br>    <span class="hljs-meta">@GetMapping(&quot;/friends&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;List&lt;FriendsVO&gt;&gt; <span class="hljs-title function_">getFriend</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam</span> <span class="hljs-type">int</span> id)</span>&#123;<br>        <span class="hljs-keyword">return</span> RestBean.success(accountService.findFriendsById(id));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></div>
 </li>
 <li><p>AuthorizeController。主要是实现用户注册功能。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api/auth&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AuthorizeController</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    AccountService accountService;<br>    <span class="hljs-meta">@PostMapping(&quot;/register&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;Void&gt; <span class="hljs-title function_">register</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> RegisterVO registerVO)</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.messageHandle(registerVO,accountService::registerAccount);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> &lt;T&gt; RestBean&lt;Void&gt; <span class="hljs-title function_">messageHandle</span><span class="hljs-params">(T vo, Function&lt;T,String&gt; function)</span>&#123;<br>        <span class="hljs-keyword">return</span> messageHandle(()-&gt;function.apply(vo));<br>    &#125;<br>    <span class="hljs-comment">//Supplier&lt;T&gt;函数式接口</span><br>    <span class="hljs-keyword">private</span> RestBean&lt;Void&gt; <span class="hljs-title function_">messageHandle</span><span class="hljs-params">(Supplier&lt;String&gt; action)</span>&#123;<br>        String message= action.get();<br>        <span class="hljs-keyword">return</span> message == <span class="hljs-literal">null</span> ? RestBean.success() : RestBean.failure(<span class="hljs-number">400</span>,message);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api/auth&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AuthorizeController</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    AccountService accountService;<br>    <span class="hljs-meta">@PostMapping(&quot;/register&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;Void&gt; <span class="hljs-title function_">register</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> RegisterVO registerVO)</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.messageHandle(registerVO,accountService::registerAccount);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> &lt;T&gt; RestBean&lt;Void&gt; <span class="hljs-title function_">messageHandle</span><span class="hljs-params">(T vo, Function&lt;T,String&gt; function)</span>&#123;<br>        <span class="hljs-keyword">return</span> messageHandle(()-&gt;function.apply(vo));<br>    &#125;<br>    <span class="hljs-comment">//Supplier&lt;T&gt;函数式接口</span><br>    <span class="hljs-keyword">private</span> RestBean&lt;Void&gt; <span class="hljs-title function_">messageHandle</span><span class="hljs-params">(Supplier&lt;String&gt; action)</span>&#123;<br>        String message= action.get();<br>        <span class="hljs-keyword">return</span> message == <span class="hljs-literal">null</span> ? RestBean.success() : RestBean.failure(<span class="hljs-number">400</span>,message);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></div>
 </li>
 <li><p>MessageController。主要是实现聊天记录的发送，存储与获取。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(value = &quot;/api/message&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MessageController</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    <span class="hljs-keyword">private</span> WebSocketServer webSocketServer;<br>    <span class="hljs-meta">@Resource</span><br>    MessageService messageService;<br>    <span class="hljs-comment">/*后端往前端发送数据*/</span><br>    <span class="hljs-meta">@PostMapping(&quot;/sendAllMessage&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;Void&gt; <span class="hljs-title function_">sendAllMessage</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> SendOneMessageVO vo)</span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            webSocketServer.sendAllMessage(vo.getMessage(), String.valueOf(vo.getSendId()));<br>            messageService.saveMessageById(vo.getSendId(),vo.getToId(),vo.getMessage());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;群发消息发送失败&quot;</span> + e.getMessage());<br>            <span class="hljs-keyword">return</span> RestBean.failure(<span class="hljs-number">400</span>,<span class="hljs-string">&quot;发送消息失败&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> RestBean.success();<br>    &#125;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/sendOneMessage&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;Void&gt; <span class="hljs-title function_">sendOneMessage</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> SendOneMessageVO vo)</span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            webSocketServer.sendOneMessage(String.valueOf(vo.getToId()),vo.getMessage(), String.valueOf(vo.getSendId()));<br>            messageService.saveMessageById(vo.getSendId(),vo.getToId(),vo.getMessage());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;单点发送消息失败&quot;</span> + e.getMessage());<br>            <span class="hljs-keyword">return</span> RestBean.failure(<span class="hljs-number">400</span>, <span class="hljs-string">&quot;发送消息失败&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> RestBean.success();<br>    &#125;<br>    <span class="hljs-meta">@GetMapping(&quot;/getMessage&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;List&lt;MessageVO&gt;&gt; <span class="hljs-title function_">getMessage</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam</span> <span class="hljs-type">int</span> id, <span class="hljs-meta">@RequestParam</span> <span class="hljs-type">int</span> sid)</span>&#123;<br>        <span class="hljs-keyword">return</span> RestBean.success(messageService.getMessage(id, sid));<br>    &#125;<br>    <span class="hljs-meta">@GetMapping(&quot;/getAllMessage&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;List&lt;MessageVO&gt;&gt; <span class="hljs-title function_">getAllMessage</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam</span> <span class="hljs-type">int</span> id)</span>&#123;<br>        <span class="hljs-keyword">return</span> RestBean.success(messageService.getAllMessage(id));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(value = &quot;/api/message&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MessageController</span> &#123;<br>    <span class="hljs-meta">@Resource</span><br>    <span class="hljs-keyword">private</span> WebSocketServer webSocketServer;<br>    <span class="hljs-meta">@Resource</span><br>    MessageService messageService;<br>    <span class="hljs-comment">/*后端往前端发送数据*/</span><br>    <span class="hljs-meta">@PostMapping(&quot;/sendAllMessage&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;Void&gt; <span class="hljs-title function_">sendAllMessage</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> SendOneMessageVO vo)</span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            webSocketServer.sendAllMessage(vo.getMessage(), String.valueOf(vo.getSendId()));<br>            messageService.saveMessageById(vo.getSendId(),vo.getToId(),vo.getMessage());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;群发消息发送失败&quot;</span> + e.getMessage());<br>            <span class="hljs-keyword">return</span> RestBean.failure(<span class="hljs-number">400</span>,<span class="hljs-string">&quot;发送消息失败&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> RestBean.success();<br>    &#125;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/sendOneMessage&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;Void&gt; <span class="hljs-title function_">sendOneMessage</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> SendOneMessageVO vo)</span>&#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            webSocketServer.sendOneMessage(String.valueOf(vo.getToId()),vo.getMessage(), String.valueOf(vo.getSendId()));<br>            messageService.saveMessageById(vo.getSendId(),vo.getToId(),vo.getMessage());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            log.error(<span class="hljs-string">&quot;单点发送消息失败&quot;</span> + e.getMessage());<br>            <span class="hljs-keyword">return</span> RestBean.failure(<span class="hljs-number">400</span>, <span class="hljs-string">&quot;发送消息失败&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> RestBean.success();<br>    &#125;<br>    <span class="hljs-meta">@GetMapping(&quot;/getMessage&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;List&lt;MessageVO&gt;&gt; <span class="hljs-title function_">getMessage</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam</span> <span class="hljs-type">int</span> id, <span class="hljs-meta">@RequestParam</span> <span class="hljs-type">int</span> sid)</span>&#123;<br>        <span class="hljs-keyword">return</span> RestBean.success(messageService.getMessage(id, sid));<br>    &#125;<br>    <span class="hljs-meta">@GetMapping(&quot;/getAllMessage&quot;)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;List&lt;MessageVO&gt;&gt; <span class="hljs-title function_">getAllMessage</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam</span> <span class="hljs-type">int</span> id)</span>&#123;<br>        <span class="hljs-keyword">return</span> RestBean.success(messageService.getAllMessage(id));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></div>
 </li>
 <li><p>ValidationController。实现对各类异常的封装处理。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@RestControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ValidationController</span> &#123;<br>    <span class="hljs-meta">@ExceptionHandler(ValidationException.class)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;Void&gt; <span class="hljs-title function_">validationException</span><span class="hljs-params">(ValidationException exception)</span>&#123;<br>        log.warn(<span class="hljs-string">&quot;Resolve [&#123;&#125;: &#123;&#125;]&quot;</span>,exception.getClass().getName(),exception.getMessage());<br>        <span class="hljs-keyword">return</span> RestBean.failure(<span class="hljs-number">400</span>,<span class="hljs-string">&quot;请求参数有误&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@RestControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ValidationController</span> &#123;<br>    <span class="hljs-meta">@ExceptionHandler(ValidationException.class)</span><br>    <span class="hljs-keyword">public</span> RestBean&lt;Void&gt; <span class="hljs-title function_">validationException</span><span class="hljs-params">(ValidationException exception)</span>&#123;<br>        log.warn(<span class="hljs-string">&quot;Resolve [&#123;&#125;: &#123;&#125;]&quot;</span>,exception.getClass().getName(),exception.getMessage());<br>        <span class="hljs-keyword">return</span> RestBean.failure(<span class="hljs-number">400</span>,<span class="hljs-string">&quot;请求参数有误&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></div></li>
 </ul>
 <h3 id="7-Websocket"><a href="#7-Websocket" class="headerlink" title="7.Websocket"></a>7.Websocket</h3><p>WebSocket 是一种网络通信协议，它提供了全双工通信通道，允许服务器和客户端之间进行双向通信。这种双向通信能够让服务器主动向客户端发送数据，而不需要客户端发起请求。</p>
 <p>使用 WebSocket 的典型步骤如下：</p>
@@ -419,203 +580,416 @@
 <li>当不再需要通信时，服务器或客户端可以选择关闭 WebSocket 连接。</li>
 </ol>
 <ul>
-<li><p>Websocket实现类。参考自<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/644037462">spring boot如何实现主动推送消息给前端 - 知乎 (zhihu.com)</a></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ServerEndpoint(&quot;/websocket/&#123;userId&#125;&quot;)</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WebSocketServer</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Logger</span> <span class="hljs-variable">logger</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(WebSocketServer.class);<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 与某个客户端的连接会话，需要通过它来给客户端发送数据</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> Session session;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 用户id</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String userId;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 用来存放每个客户端对应的MyWebSocket对象</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> CopyOnWriteArraySet&lt;WebSocketServer&gt; webSockets = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CopyOnWriteArraySet</span>&lt;&gt;();<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 用来存在线连接用户信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ConcurrentHashMap&lt;String, Session&gt; sessionPool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;String, Session&gt;();<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 链接成功调用的方法</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@OnOpen</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onOpen</span><span class="hljs-params">(Session session, <span class="hljs-meta">@PathParam(value = &quot;userId&quot;)</span> String userId)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-built_in">this</span>.session = session;<br>            <span class="hljs-built_in">this</span>.userId = userId;<br>            webSockets.add(<span class="hljs-built_in">this</span>);<br>            sessionPool.put(userId, session);<br>            logger.info(<span class="hljs-string">&quot;【websocket消息】有新的连接，总数为:&quot;</span> + webSockets.size());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 链接关闭调用的方法</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@OnClose</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onClose</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            webSockets.remove(<span class="hljs-built_in">this</span>);<br>            sessionPool.remove(<span class="hljs-built_in">this</span>.userId);<br>            logger.info(<span class="hljs-string">&quot;【websocket消息】连接断开，总数为:&quot;</span> + webSockets.size());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 收到客户端消息后调用的方法</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@OnMessage</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onMessage</span><span class="hljs-params">(String message)</span> &#123;<br>        logger.info(<span class="hljs-string">&quot;【websocket消息】收到客户端消息:&quot;</span> + message);<br><br><br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 发送错误时的处理</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> session</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> error</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@OnError</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onError</span><span class="hljs-params">(Session session, Throwable error)</span> &#123;<br>        logger.error(<span class="hljs-string">&quot;用户错误,原因:&quot;</span> + error.getMessage());<br>        error.printStackTrace();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 此为广播消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendAllMessage</span><span class="hljs-params">(String message, String sendId)</span> &#123;<br>        logger.info(<span class="hljs-string">&quot;【websocket消息】广播消息:&quot;</span> + message);<br>        <span class="hljs-keyword">for</span> (WebSocketServer webSocket : webSockets) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-keyword">if</span> (webSocket.session.isOpen()) &#123;<br>                    webSocket.session.getAsyncRemote().sendText(<span class="hljs-string">&quot;0,&quot;</span> + sendId +<span class="hljs-string">&quot;,&quot;</span> + message);<br>                &#125;<br>            &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>                e.printStackTrace();<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 此为单点消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendOneMessage</span><span class="hljs-params">(String userId, String message, String sendId)</span> &#123;<br>        <span class="hljs-type">Session</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> sessionPool.get(userId);<br>        <span class="hljs-keyword">if</span> (session != <span class="hljs-literal">null</span> &amp;&amp; session.isOpen()) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                logger.info(<span class="hljs-string">&quot;【websocket消息】 单点消息:&quot;</span> + message);<br>                session.getAsyncRemote().sendText(userId + <span class="hljs-string">&quot;,&quot;</span> + sendId + <span class="hljs-string">&quot;,&quot;</span> +message);<br>            &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>                log.error(<span class="hljs-string">&quot;发送失败&quot;</span>);<br>                e.printStackTrace();<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 此为单点消息(多人)</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendMoreMessage</span><span class="hljs-params">(String[] userIds, String message)</span> &#123;<br>        <span class="hljs-keyword">for</span> (String userId : userIds) &#123;<br>            <span class="hljs-type">Session</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> sessionPool.get(userId);<br>            <span class="hljs-keyword">if</span> (session != <span class="hljs-literal">null</span> &amp;&amp; session.isOpen()) &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    logger.info(<span class="hljs-string">&quot;【websocket消息】 单点消息:&quot;</span> + message);<br>                    session.getAsyncRemote().sendText(message);<br>                &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>                    e.printStackTrace();<br>                &#125;<br>            &#125;<br>        &#125;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><p>Websocket实现类。参考自<a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/644037462" >spring boot如何实现主动推送消息给前端 - 知乎 (zhihu.com) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ServerEndpoint(&quot;/websocket/&#123;userId&#125;&quot;)</span><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WebSocketServer</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">Logger</span> <span class="hljs-variable">logger</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(WebSocketServer.class);<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 与某个客户端的连接会话，需要通过它来给客户端发送数据</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> Session session;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 用户id</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> String userId;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 用来存放每个客户端对应的MyWebSocket对象</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> CopyOnWriteArraySet&lt;WebSocketServer&gt; webSockets = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CopyOnWriteArraySet</span>&lt;&gt;();<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 用来存在线连接用户信息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ConcurrentHashMap&lt;String, Session&gt; sessionPool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;String, Session&gt;();<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 链接成功调用的方法</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@OnOpen</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onOpen</span><span class="hljs-params">(Session session, <span class="hljs-meta">@PathParam(value = &quot;userId&quot;)</span> String userId)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-built_in">this</span>.session = session;<br>            <span class="hljs-built_in">this</span>.userId = userId;<br>            webSockets.add(<span class="hljs-built_in">this</span>);<br>            sessionPool.put(userId, session);<br>            logger.info(<span class="hljs-string">&quot;【websocket消息】有新的连接，总数为:&quot;</span> + webSockets.size());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 链接关闭调用的方法</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@OnClose</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onClose</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            webSockets.remove(<span class="hljs-built_in">this</span>);<br>            sessionPool.remove(<span class="hljs-built_in">this</span>.userId);<br>            logger.info(<span class="hljs-string">&quot;【websocket消息】连接断开，总数为:&quot;</span> + webSockets.size());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 收到客户端消息后调用的方法</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@OnMessage</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onMessage</span><span class="hljs-params">(String message)</span> &#123;<br>        logger.info(<span class="hljs-string">&quot;【websocket消息】收到客户端消息:&quot;</span> + message);<br><br><br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 发送错误时的处理</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> session</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> error</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@OnError</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onError</span><span class="hljs-params">(Session session, Throwable error)</span> &#123;<br>        logger.error(<span class="hljs-string">&quot;用户错误,原因:&quot;</span> + error.getMessage());<br>        error.printStackTrace();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 此为广播消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendAllMessage</span><span class="hljs-params">(String message, String sendId)</span> &#123;<br>        logger.info(<span class="hljs-string">&quot;【websocket消息】广播消息:&quot;</span> + message);<br>        <span class="hljs-keyword">for</span> (WebSocketServer webSocket : webSockets) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-keyword">if</span> (webSocket.session.isOpen()) &#123;<br>                    webSocket.session.getAsyncRemote().sendText(<span class="hljs-string">&quot;0,&quot;</span> + sendId +<span class="hljs-string">&quot;,&quot;</span> + message);<br>                &#125;<br>            &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>                e.printStackTrace();<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 此为单点消息</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendOneMessage</span><span class="hljs-params">(String userId, String message, String sendId)</span> &#123;<br>        <span class="hljs-type">Session</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> sessionPool.get(userId);<br>        <span class="hljs-keyword">if</span> (session != <span class="hljs-literal">null</span> &amp;&amp; session.isOpen()) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                logger.info(<span class="hljs-string">&quot;【websocket消息】 单点消息:&quot;</span> + message);<br>                session.getAsyncRemote().sendText(userId + <span class="hljs-string">&quot;,&quot;</span> + sendId + <span class="hljs-string">&quot;,&quot;</span> +message);<br>            &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>                log.error(<span class="hljs-string">&quot;发送失败&quot;</span>);<br>                e.printStackTrace();<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 此为单点消息(多人)</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendMoreMessage</span><span class="hljs-params">(String[] userIds, String message)</span> &#123;<br>        <span class="hljs-keyword">for</span> (String userId : userIds) &#123;<br>            <span class="hljs-type">Session</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> sessionPool.get(userId);<br>            <span class="hljs-keyword">if</span> (session != <span class="hljs-literal">null</span> &amp;&amp; session.isOpen()) &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    logger.info(<span class="hljs-string">&quot;【websocket消息】 单点消息:&quot;</span> + message);<br>                    session.getAsyncRemote().sendText(message);<br>                &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>                    e.printStackTrace();<br>                &#125;<br>            &#125;<br>        &#125;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></div></li>
 </ul>
 <h2 id="三、前端设计与实现"><a href="#三、前端设计与实现" class="headerlink" title="三、前端设计与实现"></a>三、前端设计与实现</h2><p>前端主要采用Vue3框架与Element-Plus组件库，使用轻量化存储组件pinia减少前端请求次数。</p>
 <h3 id="1-登录界面"><a href="#1-登录界面" class="headerlink" title="1.登录界面"></a>1.登录界面</h3><p>登录界面由一个用户账户密码输入框组成。登录成功后会自动跳转到聊天室界面，若账户密码输入错误会弹出提示错误的消息框。若未登录直接访问聊天室页面会强制跳转至登录页面。</p>
-<img src="https://image.itbaima.net/images/450/image-20231227204953572.png" alt="image-20231225171712760" style="zoom: 25%;" />
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://image.itbaima.net/images/450/image-20231227204953572.png"
+                      alt="image-20231225171712760" style="zoom: 25%;" 
+                >
 
 <h3 id="2-注册界面"><a href="#2-注册界面" class="headerlink" title="2.注册界面"></a>2.注册界面</h3><p>点击登录界面的立即注册后，将会跳转至注册界面，可在此处注册新用户，注册成功后将自动跳转至登录界面。</p>
-<img src="https://image.itbaima.net/images/450/image-2023122720941807.png" alt="image-20231225172448962" style="zoom:25%;" />
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://image.itbaima.net/images/450/image-2023122720941807.png"
+                      alt="image-20231225172448962" style="zoom:25%;" 
+                >
 
 <h3 id="3-聊天页面"><a href="#3-聊天页面" class="headerlink" title="3.聊天页面"></a>3.聊天页面</h3><p>聊天界面会显示群聊聊天室以及注册用户聊天室，可以在群聊聊天室内与注册用户一起聊天，同样也可以与注册用户单独聊天。</p>
-<img src="https://image.itbaima.net/images/450/image-2023122720738318.png" alt="image-20231225174141107" style="zoom:25%;" />
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://image.itbaima.net/images/450/image-2023122720738318.png"
+                      alt="image-20231225174141107" style="zoom:25%;" 
+                >
 
 <h3 id="4-群聊聊天室"><a href="#4-群聊聊天室" class="headerlink" title="4. 群聊聊天室"></a>4. 群聊聊天室</h3><p>在群聊聊天室发送消息，所有注册用户都会收到相应消息，并弹出新消息提示。</p>
-<img src="https://image.itbaima.net/images/450/image-20231227206804565.png" alt="image-20231225174405895" style="zoom:25%;" />
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://image.itbaima.net/images/450/image-20231227206804565.png"
+                      alt="image-20231225174405895" style="zoom:25%;" 
+                >
 
 <h3 id="5-单独聊天室"><a href="#5-单独聊天室" class="headerlink" title="5.单独聊天室"></a>5.单独聊天室</h3><p>在单独聊天室内可以与指定注册用户进行聊天，收到消息时会弹出新消息提示。</p>
-<img src="https://image.itbaima.net/images/450/image-2023122720468919.png" alt="image-20231225174740120" style="zoom:25%;" />
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://image.itbaima.net/images/450/image-2023122720468919.png"
+                      alt="image-20231225174740120" style="zoom:25%;" 
+                >
 
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/644037462">spring boot如何实现主动推送消息给前端 - 知乎 (zhihu.com)</a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/644037462" >spring boot如何实现主动推送消息给前端 - 知乎 (zhihu.com) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 </ul>
 
-  </div>
-  <div id=""></div>
-</div>
+        </div>
 
-<script>
-  
-Fancybox.bind('[data-fancybox="fancybox-gallery-img"]', {
-  dragToClose: true,
-  Toolbar: true,
-  closeButton: "top",
-  Image: {
-    zoom: true,
-  },
-  on: {
-    initCarousel: (fancybox) => {
-      const slide = fancybox.Carousel.slides[fancybox.Carousel.page];
-      fancybox.$container.style.setProperty(
-        "--bg-image",
-        `url("${slide.$thumb.src}")`
-      );
-    },
-    "Carousel.change": (fancybox, carousel, to, from) => {
-      const slide = carousel.slides[to];
-      fancybox.$container.style.setProperty(
-        "--bg-image",
-        `url("${slide.$thumb.src}")`
-      );
-    },
-  },
-});
-</script>
-
-<style>
-    #noneimg img {
-        display: none;
-        z-index: 9999;
-        /* width: 600px !important; */
-        min-width: 0%;
-        max-width: 90%;
-        max-height: 80%;
-        border-radius: 0px;
-        position: fixed;
-        box-shadow: 0 0 0px #c3c3c300 !important;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto !important;
-    }
-
-    @media screen and (max-width:600px) {
-        #noneimg img {
-            max-width: 88%
-        }
-    }
-</style>
-
-    <div class="post-paging">
-    
-
-    
-</div>
-</div>
-		
-<div class="footer">
-	<div class="Copyright">
-		©2023 By hanana. 主题：<a
-			style="text-decoration: none;display: contents; color: #898F9F;"
-			target="_blank" rel="noopener" href="https://github.com/79e/hexo-theme-quiet">Quiet</a>
-	</div>
-	<div class="contact">
-		
-		<a target="_blank" rel="noopener" href="https://github.com/hanana-ustc">
-			<img src="https://cdn.jsdelivr.net/gh/duogongneng/MyBlogImg/imggithub.png" alt="Quiet主题">
-		</a>
-		
-	</div>
-</div>
-
-<script src="/js/gotop.js"></script>
-
-
-<style type="text/css">
-    @media screen and (min-width: 600px) {
-        .goTop>span {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            opacity: 0.8;
-            background: rgba(18, 24, 58, 0.06);
-            text-align: center;
-            transition: border .5s;
-            border: 1px solid rgba(18, 24, 58, 0.06);
-
-            -moz-transition: border .5s;
-            /* Firefox 4 */
-            -webkit-transition: border .5s;
-            /* Safari 和 Chrome */
-            -o-transition: border .5s;
-            /* Opera */
-        }
-
-        .goTop>span:hover {
-            border: 1px solid #6680B3;
-        }
-
-
-        .goTop {
-            position: fixed;
-            right: 30px;
-            bottom: 80px;
-        }
-
-        .goTop>span>svg {
-            width: 20px;
-            height: 20px;
-            opacity: 0.7;
-        }
-
-    }
-
-    @media screen and (max-width: 600px) {
-        .goTop {
-            display: none;
-        }
-    }
-</style>
-<div class="goTop" id="js-go_top">
-    <span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <g>
-                <path d="M13 12v8h-2v-8H4l8-8 8 8z"></path>
-            </g>
-        </svg>
-    </span>
-</div>
-<script>
-    $( '#js-go_top' )
-	.gotoTop( {
-		offset: 500,
-		speed: 300,
-		animationShow: {
-			'transform': 'translate(0,0)',
-			'transition': 'transform .5s ease-in-out'
-		},
-		animationHide: {
-			'transform': 'translate(100px,0)',
-			'transition': 'transform .5s ease-in-out'
-		}
-	} );
-</script>
-
-
-    <!-- Gitalk -->
-    <script>
-        const data = '{"clientID":"02b3c","clientSecret":"adfc7b4","repo":"gimment","owner":"duneng","admin":"duneng"}'
-        const gitalk = new Gitalk({
-            ...JSON.parse( data),
-            id:location.pathname,
-            distractionFreeMode:false
-        })
         
-        if(Boolean('false')){
-            gitalk.render('gitalk-container')
-        }
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> 聊聊(chatchat)基于SpringBoot的多人在线聊天室</li>
+        <li><strong>作者:</strong> The Redefine Team</li>
+        <li><strong>创建于
+                :</strong> 2023-12-27 20:33:36</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2023-12-27 21:55:34
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://redefine.ohevan.com/2023/12/27/Network-programming-homework/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/Spring/">#Spring</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div id="waline"></div>
+    <script type="module" data-swup-reload-script>
+      import { init } from '/js/libs/waline.mjs';
+
+      function loadWaline() {
+        init({
+          el: '#waline',
+          serverURL: 'https://example.example.com',
+          lang: 'zh-CN',
+          dark: 'body[class~="dark-mode"]',
+          requiredMeta: ['nick', 'mail'],
+          emoji: [],
+          recaptchaV3Key: "wasd",
+          
+        });
+      }
+
+      if (typeof swup !== 'undefined') {
+        loadWaline();
+      } else {
+        window.addEventListener('DOMContentLoaded', loadWaline);
+      }
     </script>
 
-<script>
-	console.log('\n %c Hexo-Quiet 主题 %c https://github.com/79e/hexo-theme-quiet \n', 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;')
-</script>
-	</body>
-</html>
 
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">聊聊(chatchat)基于SpringBoot的多人在线聊天室</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E7%AE%80%E4%BB%8B"><span class="nav-text">一、项目简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D"><span class="nav-text">1.功能介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8A%80%E6%9C%AF%E7%AE%80%E4%BB%8B"><span class="nav-text">2.技术简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80"><span class="nav-text">3.代码仓库地址</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%90%8E%E7%AB%AF%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0"><span class="nav-text">二、后端设计与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84"><span class="nav-text">1.项目架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84"><span class="nav-text">2.数据库架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96"><span class="nav-text">3.项目依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE"><span class="nav-text">4.全局配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="nav-text">5.数据访问层设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E5%B1%82"><span class="nav-text">6.业务逻辑层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Websocket"><span class="nav-text">7.Websocket</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%89%8D%E7%AB%AF%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0"><span class="nav-text">三、前端设计与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2"><span class="nav-text">1.登录界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B3%A8%E5%86%8C%E7%95%8C%E9%9D%A2"><span class="nav-text">2.注册界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%81%8A%E5%A4%A9%E9%A1%B5%E9%9D%A2"><span class="nav-text">3.聊天页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%BE%A4%E8%81%8A%E8%81%8A%E5%A4%A9%E5%AE%A4"><span class="nav-text">4. 群聊聊天室</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%8D%95%E7%8B%AC%E8%81%8A%E5%A4%A9%E5%AE%A4"><span class="nav-text">5.单独聊天室</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-text">参考文章</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">The Redefine Team</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
