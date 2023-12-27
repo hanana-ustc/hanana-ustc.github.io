@@ -355,6 +355,10 @@
 <img src="https://image.itbaima.net/images/450/image-20231227207792547.png" alt="image-20231225112558804" style="zoom:50%;" />
 
 <h3 id="2-数据库架构"><a href="#2-数据库架构" class="headerlink" title="2.数据库架构"></a>2.数据库架构</h3><p>根据需求，建立两张表，一张为账户表，存储注册用户的账户信息，另一张为聊天信息存储表，存储发送的聊天信息。所建表如下所示。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-number">2</span><br>    <span class="hljs-number">3</span><br>    <span class="hljs-number">4</span><br>    <span class="hljs-number">5</span><br>    <span class="hljs-number">6</span><br>    <span class="hljs-number">7</span><br></code></pre></td></tr></table></figure>
+
+
+
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs mysql">-- 创建库<br>create database if not exists chatchat;<br><br>-- 切换库<br>use chat;<br><br>-- 创建用户表<br>drop table if exists db_account;<br>create table db_account<br>(<br>    id int auto_increment comment &#x27;id&#x27; primary key,<br>    username varchar(128) not null comment &#x27;用户名&#x27;,<br>    password varchar(128) not null comment &#x27;密码&#x27;,<br>    email varchar(128) null comment &#x27;电子邮箱&#x27;,<br>    avatar varchar(512) null comment &#x27;用户链接&#x27;,<br>	role varchar(128) not null comment &#x27;用户权限&#x27;,<br>    register_time datetime default CURRENT_TIMESTAMP not null comment &#x27;注册时间&#x27;<br>) comment &#x27;账户表&#x27; collate = utf8mb4_unicode_ci;<br><br>-- 聊天记录表<br>drop table if exists db_message;<br>create table db_message<br>(<br>    id int auto_increment comment &#x27;id&#x27; primary key,<br>    send_id int not null comment &#x27;发送者id&#x27;,<br>    to_id int not null comment &#x27;发送到id,0表示群发&#x27;,<br>    message varchar(512) not null comment &#x27;聊天信息&#x27;<br>) comment &#x27;聊天记录&#x27; collate = utf8mb4_unicode_ci;<br></code></pre></td></tr></table></figure>
 
 <h3 id="3-项目依赖"><a href="#3-项目依赖" class="headerlink" title="3.项目依赖"></a>3.项目依赖</h3><p>本项目使用maven架构进行项目管理。所用到的依赖如下所示。</p>
