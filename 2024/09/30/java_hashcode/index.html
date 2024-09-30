@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="hanana">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://hanana-ustc.github.io/2024/09/30/java_hashcode/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="关于Java hashcode方法具体实现原理众说纷纭，本文将从c++源代码角度分析Java hashcode方法究竟是如何实现的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java hashcode到底从何而来？">
+<meta property="og:url" content="https://hanana-ustc.github.io/2024/09/30/java_hashcode/index.html">
+<meta property="og:site_name" content="hanana">
+<meta property="og:description" content="关于Java hashcode方法具体实现原理众说纷纭，本文将从c++源代码角度分析Java hashcode方法究竟是如何实现的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-09-30T13:15:21.324Z">
+<meta property="article:modified_time" content="2024-09-30T14:04:55.702Z">
+<meta property="article:author" content="hanana">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Java hashcode到底从何而来？ -
+        
+        hanana的知识小屋
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        hanana的知识小屋
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"hanana-ustc.github.io","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null},"highlight_theme":{"light":"github","dark":"vs2015"}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Theme Redefine","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn","show_author":false},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null},"style":"default"}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true},"width":{"home":"1200px","pages":"1000px"}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null,"show_on_mobile":true},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3},"excerpt_length":200},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                hanana的知识小屋
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/images/java_pic2.jpg" alt="Java hashcode到底从何而来？" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">Java hashcode到底从何而来？</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/yela.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">hanana</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-30 21:15:21</span>
+        <span class="mobile">2024-09-30 21:15:21</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-30 22:04:55</span>
+            <span class="mobile">2024-09-30 22:04:55</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/Java/">Java</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Java/">Java</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="众说纷纭的hashcode"><a href="#众说纷纭的hashcode" class="headerlink" title="众说纷纭的hashcode"></a>众说纷纭的hashcode</h2><p>hashcode作为Object类下重要的本地方法，在HashMap等一众Hash集合类中发挥巨大作用。但关于它的具体实现，网络上的各种博客简直是众说纷纭。最常见到的一种说法称，hashcode方法返回的是对象在JVM中的地址值。但笔者认为这种说法似乎站不住脚，首先若所有对象hashcode都与JVM中地址挂钩，那被JIT编译器捕获的进行栈上分配而被标量替换的对象该如何生成对应的哈希值呢？似乎光用JVM中的地址值生成hashcode并不是那么靠谱。</p>
+<h2 id="奇奇怪怪的hashcode实现"><a href="#奇奇怪怪的hashcode实现" class="headerlink" title="奇奇怪怪的hashcode实现"></a>奇奇怪怪的hashcode实现</h2><p>我们以Open JDK1.8为例，从底层代码角度看看hashcode方法的具体实现。</p>
+<p>翻阅<a class="link"   target="_blank" rel="noopener" href="https://hg.openjdk.org/jdk8u/jdk8u/hotspot/file/87ee5ee27509/src/share/vm/runtime/globals.hpp" >jdk8u&#x2F;jdk8u&#x2F;hotspot: 87ee5ee27509 src&#x2F;share&#x2F;vm&#x2F;runtime&#x2F;globals.hpp (openjdk.org) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><code>globals.hpp</code> 是 OpenJDK HotSpot JVM 源代码中的一个头文件，主要用于定义和管理全局变量和选项。这些选项通常是在运行时配置 JVM 行为的参数，它们可以影响性能、垃圾回收、调试信息等多个方面。</p>
+<p><code>globals.hpp</code>第1127行有对hashcode的定义。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">product</span>(intx, hashCode, <span class="number">5</span>,                                                \</span><br><span class="line">        <span class="string">&quot;(Unstable) select hashCode generation algorithm&quot;</span>)     			\</span><br></pre></td></tr></table></figure></div>
+
+<p>上述代码是一种编译器选项，用于选择哈希码（<code>hashCode</code>）生成的算法。这个选项允许开发者选择不同版本的哈希码生成策略。可以看到JDK 1.8默认选择了5号作为hashcode的默认实现。</p>
+<blockquote>
+<p>ps：如果你想要在运行JVM时使用不同的哈希码生成算法，可以通过命令行参数指定：</p>
+<div class="highlight-container" data-rel="Sh"><figure class="iseeu highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -XX:hashCode=3 YourApplication</span><br></pre></td></tr></table></figure></div>
+</blockquote>
+<p>接下来继续翻阅<a class="link"   target="_blank" rel="noopener" href="https://hg.openjdk.org/jdk8u/jdk8u/hotspot/file/87ee5ee27509/src/share/vm/runtime/synchronizer.cpp" >jdk8u&#x2F;jdk8u&#x2F;hotspot: 87ee5ee27509 src&#x2F;share&#x2F;vm&#x2F;runtime&#x2F;synchronizer.cpp (openjdk.org) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><code>synchronizer.cpp</code>这个文件主要包含了实现Java对象同步机制（如<code>synchronized</code>关键字）的底层代码。</p>
+<blockquote>
+<p>ps：接下来会写一篇关于synchronized关键字的底层实现相关文章，先在这里立个flag。</p>
+</blockquote>
+<p><code>synchronizer.cpp</code>第537行是hashcode方法的具体实现。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hashCode() generation :</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Possibilities:</span></span><br><span class="line"><span class="comment">// * MD5Digest of &#123;obj,stwRandom&#125;</span></span><br><span class="line"><span class="comment">// * CRC32 of &#123;obj,stwRandom&#125; or any linear-feedback shift register function.</span></span><br><span class="line"><span class="comment">// * A DES- or AES-style SBox[] mechanism</span></span><br><span class="line"><span class="comment">// * One of the Phi-based schemes, such as:</span></span><br><span class="line"><span class="comment">//   2654435761 = 2^32 * Phi (golden ratio)</span></span><br><span class="line"><span class="comment">//   HashCodeValue = ((uintptr_t(obj) &gt;&gt; 3) * 2654435761) ^ GVars.stwRandom ;</span></span><br><span class="line"><span class="comment">// * A variation of Marsaglia&#x27;s shift-xor RNG scheme.</span></span><br><span class="line"><span class="comment">// * (obj ^ stwRandom) is appealing, but can result</span></span><br><span class="line"><span class="comment">//   in undesirable regularity in the hashCode values of adjacent objects</span></span><br><span class="line"><span class="comment">//   (objects allocated back-to-back, in particular).  This could potentially</span></span><br><span class="line"><span class="comment">//   result in hashtable collisions and reduced hashtable efficiency.</span></span><br><span class="line"><span class="comment">//   There are simple ways to &quot;diffuse&quot; the middle address bits over the</span></span><br><span class="line"><span class="comment">//   generated hashCode values:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">intptr_t</span> <span class="title">get_next_hash</span><span class="params">(Thread * Self, oop obj)</span> </span>&#123;</span><br><span class="line">  <span class="type">intptr_t</span> value = <span class="number">0</span> ;</span><br><span class="line">  <span class="keyword">if</span> (hashCode == <span class="number">0</span>) &#123;</span><br><span class="line">     <span class="comment">// This form uses an unguarded global Park-Miller RNG,</span></span><br><span class="line">     <span class="comment">// so it&#x27;s possible for two threads to race and generate the same RNG.</span></span><br><span class="line">     <span class="comment">// On MP system we&#x27;ll have lots of RW access to a global, so the</span></span><br><span class="line">     <span class="comment">// mechanism induces lots of coherency traffic.</span></span><br><span class="line">     value = os::<span class="built_in">random</span>() ;</span><br><span class="line">  &#125; <span class="keyword">else</span></span><br><span class="line">  <span class="keyword">if</span> (hashCode == <span class="number">1</span>) &#123;</span><br><span class="line">     <span class="comment">// This variation has the property of being stable (idempotent)</span></span><br><span class="line">     <span class="comment">// between STW operations.  This can be useful in some of the 1-0</span></span><br><span class="line">     <span class="comment">// synchronization schemes.</span></span><br><span class="line">     <span class="type">intptr_t</span> addrBits = <span class="built_in">cast_from_oop</span>&lt;<span class="type">intptr_t</span>&gt;(obj) &gt;&gt; <span class="number">3</span> ;</span><br><span class="line">     value = addrBits ^ (addrBits &gt;&gt; <span class="number">5</span>) ^ GVars.stwRandom ;</span><br><span class="line">  &#125; <span class="keyword">else</span></span><br><span class="line">  <span class="keyword">if</span> (hashCode == <span class="number">2</span>) &#123;</span><br><span class="line">     value = <span class="number">1</span> ;            <span class="comment">// for sensitivity testing</span></span><br><span class="line">  &#125; <span class="keyword">else</span></span><br><span class="line">  <span class="keyword">if</span> (hashCode == <span class="number">3</span>) &#123;</span><br><span class="line">     value = ++GVars.hcSequence ;</span><br><span class="line">  &#125; <span class="keyword">else</span></span><br><span class="line">  <span class="keyword">if</span> (hashCode == <span class="number">4</span>) &#123;</span><br><span class="line">     value = <span class="built_in">cast_from_oop</span>&lt;<span class="type">intptr_t</span>&gt;(obj) ;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="comment">// Marsaglia&#x27;s xor-shift scheme with thread-specific state</span></span><br><span class="line">     <span class="comment">// This is probably the best overall implementation -- we&#x27;ll</span></span><br><span class="line">     <span class="comment">// likely make this the default in future releases.</span></span><br><span class="line">     <span class="type">unsigned</span> t = Self-&gt;_hashStateX ;</span><br><span class="line">     t ^= (t &lt;&lt; <span class="number">11</span>) ;</span><br><span class="line">     Self-&gt;_hashStateX = Self-&gt;_hashStateY ;</span><br><span class="line">     Self-&gt;_hashStateY = Self-&gt;_hashStateZ ;</span><br><span class="line">     Self-&gt;_hashStateZ = Self-&gt;_hashStateW ;</span><br><span class="line">     <span class="type">unsigned</span> v = Self-&gt;_hashStateW ;</span><br><span class="line">     v = (v ^ (v &gt;&gt; <span class="number">19</span>)) ^ (t ^ (t &gt;&gt; <span class="number">8</span>)) ;</span><br><span class="line">     Self-&gt;_hashStateW = v ;</span><br><span class="line">     value = v ;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  value &amp;= markOopDesc::hash_mask;</span><br><span class="line">  <span class="keyword">if</span> (value == <span class="number">0</span>) value = <span class="number">0xBAD</span> ;</span><br><span class="line">  <span class="built_in">assert</span> (value != markOopDesc::no_hash, <span class="string">&quot;invariant&quot;</span>) ;</span><br><span class="line">  <span class="built_in">TEVENT</span> (hashCode: GENERATE) ;</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>接下来将逐个分析各种实现方式。</p>
+<h3 id="0-随机数生成hashcode"><a href="#0-随机数生成hashcode" class="headerlink" title="0. 随机数生成hashcode"></a>0. 随机数生成hashcode</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (hashCode == <span class="number">0</span>) &#123;</span><br><span class="line">   value = os::<span class="built_in">random</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><strong>策略</strong>: 使用全局 Park-Miller 随机数生成器。</li>
+<li><strong>问题</strong>: 多个线程可能会生成相同的随机数，且在多处理器系统中可能会产生大量的缓存一致性开销。</li>
+</ul>
+<h3 id="1-对象地址和全局随机数进行异或运算生成hashcode"><a href="#1-对象地址和全局随机数进行异或运算生成hashcode" class="headerlink" title="1. 对象地址和全局随机数进行异或运算生成hashcode"></a>1. 对象地址和全局随机数进行异或运算生成hashcode</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (hashCode == <span class="number">1</span>) &#123;</span><br><span class="line">   <span class="type">intptr_t</span> addrBits = <span class="built_in">cast_from_oop</span>&lt;<span class="type">intptr_t</span>&gt;(obj) &gt;&gt; <span class="number">3</span>;</span><br><span class="line">   value = addrBits ^ (addrBits &gt;&gt; <span class="number">5</span>) ^ GVars.stwRandom;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><strong>策略</strong>: 使用对象地址和全局随机数进行异或运算。</li>
+<li><strong>特点</strong>: 在 STW（Stop-The-World）操作之间是稳定的，适用于一些同步方案。</li>
+</ul>
+<h3 id="2-直接返回1作为hashcode"><a href="#2-直接返回1作为hashcode" class="headerlink" title="2. 直接返回1作为hashcode"></a>2. 直接返回1作为hashcode</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (hashCode == <span class="number">2</span>) &#123;</span><br><span class="line">   value = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><strong>策略</strong>: 返回常数值 <code>1</code>，用于敏感性测试。</li>
+</ul>
+<h3 id="3-使用全局递增序号作为hashcode"><a href="#3-使用全局递增序号作为hashcode" class="headerlink" title="3. 使用全局递增序号作为hashcode"></a>3. 使用全局递增序号作为hashcode</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (hashCode == <span class="number">3</span>) &#123;</span><br><span class="line">   value = ++GVars.hcSequence;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><strong>策略</strong>: 使用全局递增的序列号。</li>
+</ul>
+<h3 id="4-对象地址作为hashcode"><a href="#4-对象地址作为hashcode" class="headerlink" title="4. 对象地址作为hashcode"></a>4. 对象地址作为hashcode</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (hashCode == <span class="number">4</span>) &#123;</span><br><span class="line">   value = <span class="built_in">cast_from_oop</span>&lt;<span class="type">intptr_t</span>&gt;(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><strong>策略</strong>: 直接使用对象的地址。</li>
+</ul>
+<h3 id="5-使用Marsaglia-的-xor-shift-随机数生成器生成hashcode"><a href="#5-使用Marsaglia-的-xor-shift-随机数生成器生成hashcode" class="headerlink" title="5. 使用Marsaglia 的 xor-shift 随机数生成器生成hashcode"></a>5. 使用Marsaglia 的 xor-shift 随机数生成器生成hashcode</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> t = Self-&gt;_hashStateX;</span><br><span class="line">t ^= (t &lt;&lt; <span class="number">11</span>);</span><br><span class="line">Self-&gt;_hashStateX = Self-&gt;_hashStateY;</span><br><span class="line">Self-&gt;_hashStateY = Self-&gt;_hashStateZ;</span><br><span class="line">Self-&gt;_hashStateZ = Self-&gt;_hashStateW;</span><br><span class="line"><span class="type">unsigned</span> v = Self-&gt;_hashStateW;</span><br><span class="line">v = (v ^ (v &gt;&gt; <span class="number">19</span>)) ^ (t ^ (t &gt;&gt; <span class="number">8</span>));</span><br><span class="line">Self-&gt;_hashStateW = v;</span><br><span class="line">value = v;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><strong>策略</strong>: 使用 Marsaglia 的 xor-shift 随机数生成器，每个线程有独立的随机状态。</li>
+<li><strong>特点</strong>: 可能是未来版本的默认实现，具有良好的随机性和性能。</li>
+</ul>
+<h2 id="为什么是你？xor-shift随机数生成器"><a href="#为什么是你？xor-shift随机数生成器" class="headerlink" title="为什么是你？xor-shift随机数生成器"></a>为什么是你？xor-shift随机数生成器</h2><p>Marsaglia 的 xor-shift 随机数生成器因其高效性和良好的随机性，成为 <code>hashCode</code> 生成的一个受欢迎的选择。</p>
+<p>Marsaglia 的 xor-shift 随机数生成器是一种高效的伪随机数生成算法，基于位操作（主要是异或和位移）来生成随机数。这个算法由知名数学家 George Marsaglia 提出，旨在提供一种简单而快速的随机数生成方法。</p>
+<blockquote>
+<p>简单的xor-shift随机数生成器实现原理：</p>
+<ol>
+<li><p><strong>状态表示</strong>：</p>
+<ul>
+<li>xor-shift 算法使用一个整数（通常是 32 位或 64 位）作为内部状态。这一状态存储了生成随机数所需的信息。</li>
+</ul>
+</li>
+<li><p><strong>随机数生成过程</strong>：</p>
+<ul>
+<li><p>随机数生成的基本步骤是：</p>
+<ul>
+<li>通过一系列的位运算（异或和位移），更新内部状态。</li>
+<li>返回更新后的状态作为产生的伪随机数。</li>
+</ul>
+</li>
+<li><p>具体过程可以表示为以下步骤（以 32 位为例）：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">uint32_t x = state;  // 内部状态</span><br><span class="line"></span><br><span class="line">// 更新过程</span><br><span class="line">x ^= (x &lt;&lt; a);  // 将状态左移并与自身进行异或</span><br><span class="line">x ^= (x &gt;&gt; b);  // 将状态右移并与自身进行异或</span><br><span class="line">x ^= (x &lt;&lt; c);  // 将状态再次左移与自身进行异或</span><br><span class="line"></span><br><span class="line">// 输出新状态</span><br><span class="line">state = x;</span><br><span class="line">return x;</span><br></pre></td></tr></table></figure></div>
+
+
+</li>
+<li><p>其中，<code>a</code>、<code>b</code> 和 <code>c</code> 是提前定义的位移量（通常是 13、17、5）。这些位移量可以调整，以提高算法的质量。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>参数选择</strong>：</p>
+<ul>
+<li>所有的参数（即位移量）都旨在通过不同的位移方式来确保随机性，避免生成序列中的模式。</li>
+</ul>
+</li>
+<li><p><strong>周期性</strong>：</p>
+<ul>
+<li>xor-shift 算法具有很大的周期（在 32 位情况下，可以达到 2^32 - 1），即在生成一定数量的随机数后，生成的序列会重复。因此，提出合适的初始状态（种子）尤为重要，以确保随机性。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p>首先看看其他4种生成方式的优缺点。</p>
+<ol>
+<li><strong>全局随机数生成器</strong>：<ul>
+<li><strong>优点</strong>：简单，易于实现。</li>
+<li><strong>缺点</strong>：可能引入竞争条件，多线程中同一时刻会生成相同的随机数，降低分布均匀性和应用效果。</li>
+</ul>
+</li>
+<li><strong>稳态哈希生成</strong>（基于地址）：<ul>
+<li><strong>优点</strong>：在 STW 操作间保持稳定，可重用。</li>
+<li><strong>缺点</strong>：可能导致哈希码值的分布不均匀，尤其是在相邻对象之间，可能增加哈希冲突。</li>
+</ul>
+</li>
+<li><strong>常量哈希</strong>（返回 <code>1</code> 或递增序列号）：<ul>
+<li><strong>优点</strong>：在特定测试中便于使用，简单。</li>
+<li><strong>缺点</strong>：生成的哈希值缺乏多样性，几乎总是相同，绝对不适合实际应用中的哈希表。</li>
+</ul>
+</li>
+<li><strong>直接使用地址</strong>：<ul>
+<li><strong>优点</strong>：简单直接，容易实现。</li>
+<li><strong>缺点</strong>：不考虑随机性，可能导致相近内存位置的对象产生相同的哈希值，从而增加哈希冲突的概率。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>ps：其实它们的缺点都指向一个问题——哈希冲突！</p>
+</blockquote>
+<p>而xor-shift随机数生成器</p>
+<ol>
+<li><strong>高效性</strong>：<ul>
+<li>xor-shift 算法非常快，因为它只依赖于位运算（异或和移位）。这使得它在生成哈希码时不会引入太多的性能开销。</li>
+</ul>
+</li>
+<li><strong>简单实现</strong>：<ul>
+<li>xor-shift 的实现相对简单，代码长度较少，易于维护和理解。</li>
+</ul>
+</li>
+<li><strong>良好的随机性</strong>：<ul>
+<li>这种随机数生成器能够生成具有较长周期的随机数序列，因此在较长时间内使用时仍然可以保持随机性，降低碰撞的可能性。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>ps：可以看到xor-shift随机数生成器拥有更长的周期，相比其他方案哈希冲突可能性更小。</p>
+</blockquote>
+<blockquote>
+<p>ps：从代码可以看出xor-shift还是有可能发生哈希冲突的，所以HashMap判定key是否相同时，不仅判断key的hashcode，还要调用equals方法。</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> Java hashcode到底从何而来？</li>
+        <li><strong>作者:</strong> hanana</li>
+        <li><strong>创建于
+                :</strong> 2024-09-30 21:15:21</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-09-30 22:04:55
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://redefine.ohevan.com/2024/09/30/java_hashcode/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/Java/">#Java</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/12/27/java_generics/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Java泛型机制探讨</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">Java hashcode到底从何而来？</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%97%E8%AF%B4%E7%BA%B7%E7%BA%AD%E7%9A%84hashcode"><span class="nav-text">众说纷纭的hashcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%87%E5%A5%87%E6%80%AA%E6%80%AA%E7%9A%84hashcode%E5%AE%9E%E7%8E%B0"><span class="nav-text">奇奇怪怪的hashcode实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90hashcode"><span class="nav-text">0. 随机数生成hashcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AF%B9%E8%B1%A1%E5%9C%B0%E5%9D%80%E5%92%8C%E5%85%A8%E5%B1%80%E9%9A%8F%E6%9C%BA%E6%95%B0%E8%BF%9B%E8%A1%8C%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97%E7%94%9F%E6%88%90hashcode"><span class="nav-text">1. 对象地址和全局随机数进行异或运算生成hashcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%9B%B4%E6%8E%A5%E8%BF%94%E5%9B%9E1%E4%BD%9C%E4%B8%BAhashcode"><span class="nav-text">2. 直接返回1作为hashcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8%E5%85%A8%E5%B1%80%E9%80%92%E5%A2%9E%E5%BA%8F%E5%8F%B7%E4%BD%9C%E4%B8%BAhashcode"><span class="nav-text">3. 使用全局递增序号作为hashcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%AF%B9%E8%B1%A1%E5%9C%B0%E5%9D%80%E4%BD%9C%E4%B8%BAhashcode"><span class="nav-text">4. 对象地址作为hashcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E4%BD%BF%E7%94%A8Marsaglia-%E7%9A%84-xor-shift-%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8%E7%94%9F%E6%88%90hashcode"><span class="nav-text">5. 使用Marsaglia 的 xor-shift 随机数生成器生成hashcode</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E4%BD%A0%EF%BC%9Fxor-shift%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8"><span class="nav-text">为什么是你？xor-shift随机数生成器</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">hanana</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
