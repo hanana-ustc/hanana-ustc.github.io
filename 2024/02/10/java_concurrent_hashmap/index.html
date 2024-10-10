@@ -13,19 +13,22 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://hanana-ustc.github.io/archives/"/>
+    <link rel="canonical" href="https://hanana-ustc.github.io/2024/02/10/java_concurrent_hashmap/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="感慨路难行，不如马上出发">
-<meta property="og:type" content="website">
-<meta property="og:title" content="hanana">
-<meta property="og:url" content="https://hanana-ustc.github.io/archives/index.html">
+        <meta name="description" content="ConcurrentHashMap的key与value不能为null，但HashMap的key与value却都可为null，从代码实现角度分析，为何如此。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java ConcurrentHashMap 为什么 key 与 value 不能为 null？">
+<meta property="og:url" content="https://hanana-ustc.github.io/2024/02/10/java_concurrent_hashmap/index.html">
 <meta property="og:site_name" content="hanana">
-<meta property="og:description" content="感慨路难行，不如马上出发">
+<meta property="og:description" content="ConcurrentHashMap的key与value不能为null，但HashMap的key与value却都可为null，从代码实现角度分析，为何如此。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-10T15:10:22.000Z">
+<meta property="article:modified_time" content="2024-10-04T08:43:14.327Z">
 <meta property="article:author" content="hanana">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
     
     
@@ -38,7 +41,7 @@
     
     <title>
         
-            归档 -
+            Java ConcurrentHashMap 为什么 key 与 value 不能为 null？ -
         
         hanana的知识小屋
     </title>
@@ -373,84 +376,227 @@
             <div class="main-content">
 
                 
-                    <div class="archive-container shadow-none hover:shadow-none sm:shadow-redefine sm:hover:shadow-redefine-hover">
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/images/java_pic3.png" alt="Java ConcurrentHashMap 为什么 key 与 value 不能为 null？" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">Java ConcurrentHashMap 为什么 key 与 value 不能为 null？</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/yela.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">hanana</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-02-10 23:10:22</span>
+        <span class="mobile">2024-02-10 23:10:22</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-10-04 16:43:14</span>
+            <span class="mobile">2024-10-04 16:43:14</span>
+            <span class="hover-info">更新</span>
+        </span>
     
 
-<div class="archive-list-container">
     
-        <section class="archive-item">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2024</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">3</span>
-            </div>
-            <ul class="article-list pl-8 text-lg leading-[1.5]">
-              
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
                 
                     
-                    <li class="article-item" date-is='02-12'>
-                
-                
-                    <a href="/2024/02/12/go_lru/" class="block overflow-hidden">
-                        <span class="article-title mb-0.5 text-2xl">Go 实现简易 LRU 队列</span>
-                    </a>
-                
-              
-                
+                        
+                        <li>
+                            <a href="/categories/Java/">Java</a>&nbsp;
+                        </li>
                     
-                    <li class="article-item" date-is='02-10'>
-                
-                
-                    <a href="/2024/02/10/java_concurrent_hashmap/" class="block overflow-hidden">
-                        <span class="article-title mb-0.5 text-2xl">Java ConcurrentHashMap 为什么 key 与 value 不能为 null？</span>
-                    </a>
-                
-              
-                
                     
-                    <li class="article-item" date-is='01-23'>
                 
-                
-                    <a href="/2024/01/23/java_string_array/" class="block overflow-hidden">
-                        <span class="article-title mb-0.5 text-2xl">Java String 底层数组 JDK8 到 JDK9 的变化</span>
-                    </a>
-                
-              
             </ul>
-        </section>
+        </span>
     
-        <section class="archive-item">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2023</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">2</span>
-            </div>
-            <ul class="article-list pl-8 text-lg leading-[1.5]">
-              
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
                 
-                    
-                    <li class="article-item" date-is='12-30'>
+                    <li>
+                        <a href="/tags/Java/">Java</a>&nbsp;
+                    </li>
                 
-                
-                    <a href="/2023/12/30/java_hashcode/" class="block overflow-hidden">
-                        <span class="article-title mb-0.5 text-2xl">Java hashcode到底从何而来？</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-27'>
-                
-                
-                    <a href="/2023/12/27/java_generics/" class="block overflow-hidden">
-                        <span class="article-title mb-0.5 text-2xl">Java泛型机制探讨</span>
-                    </a>
-                
-              
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <p>先来看一段代码。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;Integer, Integer&gt; hashMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">ConcurrentHashMap&lt;Integer, Integer&gt; concurrentHashMap = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">hashMap.put(<span class="literal">null</span>, <span class="literal">null</span>); <span class="comment">//正常执行</span></span><br><span class="line">concurrentHashMap.put(<span class="literal">null</span>, <span class="literal">null</span>); <span class="comment">//报NullPointerException</span></span><br></pre></td></tr></table></figure></div>
+
+<p>其实输入第4行代码时，IDE就会给你警告<code>ConcurrentHashMap</code>的put方法key与value都是NotNull。</p>
+<p>从<code>concurrentHashMap</code>的put方法注解就可以看出，key与value值不能为null。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Maps the specified key to the specified value in this table. Neither the key nor the value can be null.</span></span><br><span class="line"><span class="comment">The value can be retrieved by calling the get method with a key that is equal to the original key.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> V <span class="title function_">put</span><span class="params">(<span class="meta">@NotNull</span> K key, <span class="meta">@NotNull</span> V value)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> putVal(key, value, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>查询相关资料可以得知，<code>ConcurrentHashMap</code>之所以不支持key与value值为null，是因为并发环境下null值会破坏<code>ConcurrentHashMap</code>的二义性。</p>
+<p>多线程环境下，存在一个线程操作该 <code>ConcurrentHashMap</code> 时，其他的线程将该 <code>ConcurrentHashMap</code> 修改的情况，所以无法通过 <code>containsKey(key)</code> 来判断否存在这个键值对，也就没办法解决二义性问题了。</p>
+<p>从<code>ConcurrentHashMap</code>的<code>containsKey(key)</code>实现可以看出，若一个线程put一个null值进入<code>map</code>中，另一个线程通过<code>containsKey(key)</code>判断该key是否存在时，会出现二义性。</p>
+<ul>
+<li><code>null</code>代表值为<code>null</code></li>
+<li><code>null</code>代表map中不存在该<code>key</code></li>
+</ul>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">containsKey</span><span class="params">(Object key)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> get(key) != <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>因此<code>ConcurrentHashMap</code>为了避免这种二义性，转而干脆不允许null值的key或value。</p>
+<p>那为什么<code>HashMap</code>却又支持null值的key与value呢？</p>
+<p>这是因为<code>HashMap</code>使用场景一般为单线程环境，由用户自己决定为null的key值与value值代表什么含义，不会产生二义性。</p>
+<p>从<code>HashMap</code>的<code>containsKey</code>也可以看出。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">containsKey</span><span class="params">(Object key)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> getNode(key) != <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//null值返回的是Node而不是null</span></span><br><span class="line"><span class="keyword">final</span> Node&lt;K,V&gt; <span class="title function_">getNode</span><span class="params">(Object key)</span> &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; <span class="type">int</span> n, hash; K k;</span><br><span class="line">    <span class="keyword">if</span> ((tab = table) != <span class="literal">null</span> &amp;&amp; (n = tab.length) &gt; <span class="number">0</span> &amp;&amp;</span><br><span class="line">        (first = tab[(n - <span class="number">1</span>) &amp; (hash = hash(key))]) != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (first.hash == hash &amp;&amp; <span class="comment">// always check first node</span></span><br><span class="line">            ((k = first.key) == key || (key != <span class="literal">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">            <span class="keyword">return</span> first;</span><br><span class="line">        <span class="keyword">if</span> ((e = first.next) != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (first <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">                <span class="keyword">return</span> ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != <span class="literal">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">                    <span class="keyword">return</span> e;</span><br><span class="line">            &#125; <span class="keyword">while</span> ((e = e.next) != <span class="literal">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> Java ConcurrentHashMap 为什么 key 与 value 不能为 null？</li>
+        <li><strong>作者:</strong> hanana</li>
+        <li><strong>创建于
+                :</strong> 2024-02-10 23:10:22</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-10-04 16:43:14
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://hanana-ustc.github.io/2024/02/10/java_concurrent_hashmap/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
 </div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/Java/">#Java</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/02/12/go_lru/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Go 实现简易 LRU 队列</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/01/23/java_string_array/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Java String 底层数组 JDK8 到 JDK9 的变化</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">Java ConcurrentHashMap 为什么 key 与 value 不能为 null？</div>
+        
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
 
                 
 
@@ -523,6 +669,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
