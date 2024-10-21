@@ -13,23 +13,41 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://hanana-ustc.github.io/2024/01/23/java_string_array/"/>
+    <link rel="canonical" href="https://hanana-ustc.github.io/2024/01/12/gc/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="String 底层数组在JDK8到JDK9进行了一次小小的变动，这项变动对String所占字节数分析稍有影响。本文将从源码分析这次变动。">
+        <meta name="description" content="垃圾回收期前世今生">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java String 底层数组 JDK8 到 JDK9 的变化">
-<meta property="og:url" content="https://hanana-ustc.github.io/2024/01/23/java_string_array/index.html">
+<meta property="og:title" content="浅谈垃圾回收器的前世今生">
+<meta property="og:url" content="https://hanana-ustc.github.io/2024/01/12/gc/index.html">
 <meta property="og:site_name" content="hanana">
-<meta property="og:description" content="String 底层数组在JDK8到JDK9进行了一次小小的变动，这项变动对String所占字节数分析稍有影响。本文将从源码分析这次变动。">
+<meta property="og:description" content="垃圾回收期前世今生">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-01-23T03:20:51.000Z">
-<meta property="article:modified_time" content="2024-10-01T16:34:38.703Z">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404170841986.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404171023802.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404171103237.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240421090242912.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240421090328113.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404173003904.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404173811098.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404175421523.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180113269.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180236874.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180339248.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180404663.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180450833.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180535485.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180547745.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180601839.png">
+<meta property="og:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404200516751.png">
+<meta property="article:published_time" content="2024-01-12T05:33:31.000Z">
+<meta property="article:modified_time" content="2024-10-21T16:09:55.989Z">
 <meta property="article:author" content="hanana">
-<meta property="article:tag" content="Java">
+<meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404170841986.png">
     
     
     <!--- Icon Part-->
@@ -41,7 +59,7 @@
     
     <title>
         
-            Java String 底层数组 JDK8 到 JDK9 的变化 -
+            浅谈垃圾回收器的前世今生 -
         
         hanana的知识小屋
     </title>
@@ -383,10 +401,10 @@
             
                 
                 
-                <img src="/images/java_pic3.png" alt="Java String 底层数组 JDK8 到 JDK9 的变化" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                <img src="/images/go_pic2.png" alt="浅谈垃圾回收器的前世今生" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
                 
                 <div class="w-full flex items-center absolute bottom-0 justify-start">
-                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">Java String 底层数组 JDK8 到 JDK9 的变化</h1>
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">浅谈垃圾回收器的前世今生</h1>
                 </div>
             
             </div>
@@ -407,15 +425,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-01-23 11:20:51</span>
-        <span class="mobile">2024-01-23 11:20:51</span>
+        <span class="desktop">2024-01-12 13:33:31</span>
+        <span class="mobile">2024-01-12 13:33:31</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-10-02 00:34:38</span>
-            <span class="mobile">2024-10-02 00:34:38</span>
+            <span class="desktop">2024-10-22 00:09:55</span>
+            <span class="mobile">2024-10-22 00:09:55</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -429,7 +447,7 @@
                     
                         
                         <li>
-                            <a href="/categories/Java/">Java</a>&nbsp;
+                            <a href="/categories/java/">java</a>&nbsp;
                         </li>
                     
                     
@@ -443,7 +461,7 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/Java/">Java</a>&nbsp;
+                        <a href="/tags/java/">java</a>&nbsp;
                     </li>
                 
             </ul>
@@ -469,26 +487,269 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h2 id="JDK8的String底层数组"><a href="#JDK8的String底层数组" class="headerlink" title="JDK8的String底层数组"></a>JDK8的String底层数组</h2><p>JDK8 String底层数组为char数组，而char作为基本数据类型，在Java中占用2字节。我们可以笼统的分析字符串所占字节数为<code>字符串长度*2 B</code>.</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">String</span> <span class="keyword">implements</span> <span class="title class_">java</span>.io.Serializable, Comparable&lt;String&gt;, CharSequence &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">char</span> value[];</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<h2 id="JDK9的String底层数组"><a href="#JDK9的String底层数组" class="headerlink" title="JDK9的String底层数组"></a>JDK9的String底层数组</h2><p>JDK9 String底层数组为byte数组，而byte作为基本数据类型，在Java中占用1字节。</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">String</span></span><br><span class="line">    <span class="keyword">implements</span> <span class="title class_">java</span>.io.Serializable, Comparable&lt;String&gt;, CharSequence,</span><br><span class="line">               Constable, ConstantDesc &#123;</span><br><span class="line">    <span class="meta">@Stable</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">byte</span>[] value;</span><br></pre></td></tr></table></figure></div>
-
-<p>对于JDK 9 这项改动，Open JDK 所给出的解释是，考虑到大部分情况下，字符串内元素一般都为英文字符，而英文字符只需Latin-1编码方式即可，此时占用空间为1B，这样能够节省一半的空间；但对于有例如汉字等复杂字符，则采用UTF-16编码方式，此时占用空间为2B。</p>
-<p>为了在常用情况下能够节省点空间，Open JDK最终做出了这样的改动。</p>
-<p>因此对于字符串所占空间分析应该从两种情况进行考虑：</p>
-<ul>
-<li>仅有英文字符等简单字符：<code>字符串长度 * 1 B</code></li>
-<li>含有汉字等复杂字符：<code>字符串长度 * 2 B</code></li>
-</ul>
+            <h2 id="上古时期的垃圾回收器们"><a href="#上古时期的垃圾回收器们" class="headerlink" title="上古时期的垃圾回收器们"></a>上古时期的垃圾回收器们</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404170841986.png"
+                      alt="image-20240404170841986"
+                ></p>
+<h3 id="Serial-垃圾回收器"><a href="#Serial-垃圾回收器" class="headerlink" title="Serial 垃圾回收器"></a>Serial 垃圾回收器</h3><p>Serial垃圾回收器是单线程回收器，在GC时用户线程需要停止工作。其衍生出了Serial old垃圾回收器。</p>
 <blockquote>
-<p>ps：那对于更为复杂的字符例如表情符号😀，Java String 是如何计算字符串长度的？</p>
-<p>其实与第二种情况相同，String 会当成UTF-16来处理UTF-8mb4表情符号。</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;😀&quot;</span>;</span><br><span class="line">    System.out.println(str.length()); <span class="comment">//输出结果为2,可以看到在处理字符串长度时按UTF-16处理</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>为什么GC时用户线程需要停止工作？</p>
+<p>假设堆内有A、B对象，GCRoots引用A对象，A对象引用B对象，GC回收器工作时会标记哪些对象不被回收，因此A、B被标记为无需被回收，但GC时若程序又生成了一个C对象，且由B对象所引用。由于这个C对象没有被标记，它会被GC掉，当程序下次想要引用C时发现C对象不见了，直接down掉了。🤣</p>
+</blockquote>
+<h3 id="Parallel-Scavenge"><a href="#Parallel-Scavenge" class="headerlink" title="Parallel Scavenge"></a>Parallel Scavenge</h3><p>该死的，单线程效率不行，那我就上多线程🤬。这时就有了Parallel Scavenge。</p>
+<p>Parallel Scavenge是多线程回收器，但在GC时同样需要用户线程停止工作。它是以吞吐量优先的垃圾回收器。</p>
+<p>但是Parallel Scavenge仅仅适用于新生代。</p>
+<blockquote>
+<p>这里的吞吐量指的是CPU用于运行用户代码的时间占总时间的比值。</p>
+</blockquote>
+<h3 id="CMS垃圾回收器"><a href="#CMS垃圾回收器" class="headerlink" title="CMS垃圾回收器"></a>CMS垃圾回收器</h3><p>总是让用户线程停止，效率永远上不去，咋整。这时有了CMS垃圾回收器。</p>
+<p>CMS垃圾回收器是第一款能够与用户线程并发执行的垃圾回收器。使用标记清除算法(名字都叫并发标记清除回收器了)。过程分为初始标记(串)、并发标记(并)、重新标记(串)与并发清除(并)。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404171023802.png"
+                      alt="image-20240404171023802"
+                ></p>
+<p>CMS仅适用于老年代。</p>
+<blockquote>
+<p>CMS为啥只适用于老年代？</p>
+<p>很简单，新生代仅适用标记-复制算法。</p>
+</blockquote>
+<p>看起来CMS+Parallel Scavenge是天作之和，但其实二者不共戴天，不可能一起使用。</p>
+<h3 id="ParNew-垃圾回收器"><a href="#ParNew-垃圾回收器" class="headerlink" title="ParNew 垃圾回收器"></a>ParNew 垃圾回收器</h3><p>由于CMS与Parallel Scavenge不能一起使用，为了配合CMS推出了ParNew垃圾回收器与ParNew old。</p>
+<p>ParNew垃圾回收器是Serial垃圾回收器的多线程版本。</p>
+<h2 id="新时代的垃圾回收器们"><a href="#新时代的垃圾回收器们" class="headerlink" title="新时代的垃圾回收器们"></a>新时代的垃圾回收器们</h2><h3 id="天外来客-G1垃圾回收器"><a href="#天外来客-G1垃圾回收器" class="headerlink" title="天外来客-G1垃圾回收器"></a>天外来客-G1垃圾回收器</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404171103237.png"
+                      alt="image-20240404171103237"
+                ></p>
+<p>G1垃圾回收器的画风显然与其他三种垃圾回收器完全不同。</p>
+<p>G1的主要设计目标就是保证STW的时间和分布都可以很好的预测和配置. 事实上, Garbage-First 是一个<em>软实时</em>GC. 也就是你可以设定特定的性能要求. 你可以要求在给定的y ms中, STW的时间不能超过x ms. 比如在任何1s内都不超过5ms. G1 会尽量满足设定的目标(但不能完全肯定, 所以不是绝对实时的)。</p>
+<blockquote>
+<p>G1垃圾回收器的目标：软实时、低延迟、可设定目标。</p>
+<p>现在G1垃圾回收器是JDK9的默认GC，它适用于较大的堆(&gt;4-6G)，用于替代CMS(最新几个版本的JDK中已经移除CMS了)。</p>
+</blockquote>
+<p>为了达到这个目标, G1建立在大量的见解之上. 首先, 堆不再需要被分割进连续的2个年轻代和老年代. 取而代之的是, 堆被分为很多(典型的是2048)个小的*堆区域(heap regions)*来存储对象. 每个region都可能是Eden region, 或者Survivor region, Old region. 所有Eden和Survivor 区组合成了逻辑上的年轻代, 所有的Old region组合在一起成了老年代: <a target="_blank" rel="noopener" href="https://github.com/gaoxingliang/goodutils/blob/master/res/gcbook/g1-pool.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240421090242912.png"
+                      alt="image-20240421090242912"
+                ></a></p>
+<p>这让垃圾收集器不需要每次都收集整个堆,而是每次<em>增量</em>的解决问题:每次只会有所有region集合的一个子集会被考虑, 称为<em>收集集合Collection set</em>.年轻代的所有region在每个暂停的时候都被收集,但是老年代只有一部分会被收集:</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240421090328113.png"
+                      alt="g1-collection-set"
+                ></p>
+<p>在并发阶段的另一个新奇的事就是G1会估计每个region中包含的存活对象的个数.这被用来构建Collection set:<strong>包含最多垃圾的region总是优先被收集</strong>. 这个是名称<em>Garbage-first</em>的由来.</p>
+<p>像下面这样来使用G1 GC:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -XX:+UseG1GC com.mypackages.MyExecutableClass</span><br></pre></td></tr></table></figure></div>
 
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;你&quot;</span>;</span><br><span class="line">    System.out.println(str.length()); <span class="comment">//输出结果为1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>G1内部细节</p>
+<ul>
+<li>无需回收整个堆，而是选择一个Collection Set进行回收。</li>
+<li>G1仅有两种回收方式，Fully young GC 与 Mixed GC。</li>
+<li>估计每个Region中的垃圾比例，优先回收垃圾多的Region。</li>
+</ul>
+</blockquote>
+<p>一个Region又被分为一个个Card，Card Table每个entry覆盖512Byte的内存空间。当对应的内存空间发生改变时，标记为dirty。 </p>
+<p>一个Region对应一个RememberedSet，其指向引用该Region中Card的对象的对象。当对这个对象进行GC时，就可以根据RS找到引用它的对象(主要是为了解决跨代引用问题)。RememberedSet是用C语言写的HashTable。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404173003904.png"
+                      alt="image-20240404173003904"
+                ></p>
+<blockquote>
+<p>以上两个结构，都是用时间换空间，用额外的空间维护引用信息。</p>
+</blockquote>
+<p>前面提到了RS，那不得不提对RS信息的维护。</p>
+<p>G1采用Write barrier与四色队列的方式维护RS信息。</p>
+<ul>
+<li><p>Write barrier：每次对对象引用后，JVM都会注入一小段代码，用于记录指针的变化。</p>
+<p>object.field &#x3D;  (putfield)。但这一行为并不是立即更新RS，而是将这个对象放入四色队列中。</p>
+</li>
+<li><p>四色队列：当更新指针时，标记Card为Dirty，将Card存入Dirty Card Queue。这个队列有白&#x2F;绿&#x2F;黄&#x2F;红四种颜色。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404173811098.png"
+                      alt="image-20240404173811098"
+                ></p>
+<p>当队列处于白色时，天下太平，无事发生。</p>
+<p>当队列处于绿色时，Refinement线程开始激活，更新RS。</p>
+<p>当队列处于黄色时，全部Refinement线程激活。</p>
+<p>当队列处于红色时，应用线程也参与到更新RS的工作中。</p>
+</li>
+</ul>
+<p><strong>Fully young GC</strong></p>
+<p>在引用的开始阶段, G1不能从还没执行过的并发阶段知道任何额外的信息, 所以它最开始工作在<em>fully-young</em>模式.当年轻代满了后,应用线程被暂停,年轻代regions的活跃对象被拷贝到Surivior regions(任何其他空闲的region因此就变成了Survivor).</p>
+<blockquote>
+<p>年轻代的GC永远是标记-复制算法。</p>
+</blockquote>
+<p>拷贝的过程称为Evacuation(<em>译注:意为疏散</em>). 这与我们前面讲到的年轻代的收集器完全一样.Evacuation Pause的GC 日志非常长, 所以这里简单期间, 我们只留下了一些与第一次fully-young Evacuation Pause相关的日志. 我们随后讲到并发阶段时还会详细讲到. 除此之外, 因为日子很大, 并发阶段和其他Other阶段会在单独的段落讲到:</p>
+<ol>
+<li><em>0.134: [GC pause (G1 Evacuation Pause) (young), 0.0144119 secs]</em> G1暂停只清理年轻代的region. 这个暂停在JVM启动后134ms开始,暂停时间0.0144s.</li>
+<li><em>[Parallel Time: 13.9 ms, GC Workers: 8]</em> 表示有13.9ms (real time)用于后面的8个线程的GC活动</li>
+<li><em>…</em> 简单起见,省略了, 后面会讲到</li>
+<li><em>Code Root Fixup: 0.0 ms</em> 用于释放管理并发活动的数据结构, 该值应该总是0. 这是顺序执行的.</li>
+<li><em>[Code Root Purge: 0.0 ms]</em> 清理更多的数据结构, 应该会很快. 但不一定是0. 这是顺序执行的.</li>
+<li><em>[Other: 0.4 ms]</em> 混杂的其他活动时间, 其中的许多也是并行的.</li>
+<li><em>…</em> 后面会讲到</li>
+<li><em>[Eden: 24.0M(24.0M)-&gt;0.0B(13.0M)</em> 暂停前后Eden的使用量和容量</li>
+<li>*Survivors: 0.0B-&gt;3072.0K * 暂停前后, Survivor的使用量.</li>
+<li><em>Heap: 24.0M(256.0M)-&gt;21.9M(256.0M)]</em> 暂停前后, 堆得使用量和容量.</li>
+<li>*[Times: user&#x3D;0.04 sys&#x3D;0.04, real&#x3D;0.02 secs]*GC持续时间, 分为如下3类: - user GC线程在GC期间所用的总的CPU时间 - sys 系统调用和等待系统事件的时间 - real 应用线程总的停顿时间. 该值应大致等于 (user+system)&#x2F;GC所用线程数. - 在这个例子中,使用了8个线程. 因为有些活动没有被并行化, 所以真实值总是比计算的值大一点.</li>
+</ol>
+<blockquote>
+<p>Fully young GC过程可以被概况为：</p>
+<ul>
+<li>STW<ul>
+<li>构建CS(Eden+Survivor)</li>
+<li>扫描GC Roots</li>
+<li>Update RS：排空Dirty Card Queue</li>
+<li>Process RS：找到哪些对象被老年代引用</li>
+<li>Object Copy</li>
+<li>Reference Processing</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Fully young GC需要注意的细节：</p>
+<ul>
+<li>G1会记录每个阶段的时间，用于自动调优。</li>
+<li>记录Eden&#x2F;Survivor的数量和GC时间。<ul>
+<li>根据暂停目标自动调整Region的数量。</li>
+<li>暂停目标越短，Eden数量越少。(这样带来的后果是吞吐量下降)</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404175421523.png"
+                      alt="image-20240404175421523"
+                ></p>
+<p><strong>Mixed GC(Old GC)</strong></p>
+<p>当堆用量达到一定程度时触发，可通过-XX:InitiatingHeapOccupancyPercent&#x3D;N修改比例，默认是45%。Old GC是并发进行的，使用三色标记算法(在不暂停应用线程的情况下进行标记)</p>
+<blockquote>
+<p>三色标记法：</p>
+<p>假设一个堆中对象如下图分布。</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180113269.png"
+                      alt="image-20240404180113269" style="zoom: 33%;" 
+                >
 
+<p>先将GC Roots标记为黑色，与GC Roots连接的对象标记为灰色并将其放入队列中，其余仍为白色。</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180236874.png"
+                      alt="image-20240404180236874" style="zoom:33%;" 
+                >
+
+<p>从队列中取出灰色对象，将其标记为黑色，再将其引用的对象标记为黑色。</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180339248.png"
+                      alt="image-20240404180339248" style="zoom:33%;" 
+                >
+
+<p>最终结果如下图。</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180404663.png"
+                      alt="image-20240404180404663" style="zoom:33%;" 
+                >
+
+<p>但是这种算法会带来Lost Object Problem问题。</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180450833.png"
+                      alt="image-20240404180450833" style="zoom:33%;" 
+                >
+
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180535485.png"
+                      alt="image-20240404180535485" style="zoom:33%;" 
+                >
+
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180547745.png"
+                      alt="image-20240404180547745" style="zoom:33%;" 
+                >
+
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404180601839.png"
+                      alt="image-20240404180601839" style="zoom:33%;" 
+                >
+
+<p>这样会导致C没有被标记到，最后被清理掉。</p>
+<p>因此G1采用Snapshot-At-The-Beginning (SATB)的方式保存marking阶段开始时的快照，即使C的指针被删除，仍然认为C是活对象，C仍可以被remark阶段处理。当然这样也会带来浮动垃圾的问题。</p>
+</blockquote>
+<blockquote>
+<p>G1 Old GC流程</p>
+<ul>
+<li>STW(Fully young GC)<ul>
+<li>piggy-backed on young GC</li>
+<li>利用Young GC的信息</li>
+</ul>
+</li>
+<li>恢复应用线程</li>
+<li>并发初始标记</li>
+<li>STW<ul>
+<li>Remark<ul>
+<li>SATB</li>
+</ul>
+</li>
+<li>Cleanup<ul>
+<li>立刻回收全空区域</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>恢复应用线程。</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="C:\Users\14112\AppData\Roaming\Typora\typora-user-images\image-20240404200516751.png"
+                      alt="image-20240404200516751"
+                ></p>
+</blockquote>
+<blockquote>
+<p>Mixed GC需要注意的细节</p>
+<ul>
+<li>不一定立即发生</li>
+<li>选择若干个Region进行<ul>
+<li>默认1&#x2F;8的Old Region<ul>
+<li>可通过修改-XX:G1MixedGCCountTarget&#x3D;N修改</li>
+</ul>
+</li>
+<li>Eden+Survivor Region</li>
+<li>SWT，Parallel,Copying</li>
+</ul>
+</li>
+<li>根据暂停目标，选择垃圾最多的Old Region优先进行</li>
+</ul>
 </blockquote>
 
         </div>
@@ -497,18 +758,18 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>标题:</strong> Java String 底层数组 JDK8 到 JDK9 的变化</li>
+        <li><strong>标题:</strong> 浅谈垃圾回收器的前世今生</li>
         <li><strong>作者:</strong> hanana</li>
         <li><strong>创建于
-                :</strong> 2024-01-23 11:20:51</li>
+                :</strong> 2024-01-12 13:33:31</li>
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-10-02 00:34:38
+                    :</strong> 2024-10-22 00:09:55
             </li>
         
         <li>
-            <strong>链接:</strong> https://hanana-ustc.github.io/2024/01/23/java_string_array/
+            <strong>链接:</strong> https://hanana-ustc.github.io/2024/01/12/gc/
         </li>
         <li>
             <strong>
@@ -530,7 +791,7 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/Java/">#Java</a>&nbsp;
+                        <a href="/tags/java/">#java</a>&nbsp;
                     </li>
                 
             </ul>
@@ -544,13 +805,13 @@
                     <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="prev"
                         rel="prev"
-                        href="/2024/02/10/java_concurrent_hashmap/"
+                        href="/2024/01/23/java_string_array/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Java ConcurrentHashMap 为什么 key 与 value 不能为 null？</span>
+                                <span class="post-nav-title-item">Java String 底层数组 JDK8 到 JDK9 的变化</span>
                                 <span class="post-nav-item">上一篇</span>
                             </span>
                         </a>
@@ -560,10 +821,10 @@
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="next"
                         rel="next"
-                        href="/2024/01/12/gc/"
+                        href="/2023/12/30/java_hashcode/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">浅谈垃圾回收器的前世今生</span>
+                                <span class="post-nav-title-item">Java hashcode到底从何而来？</span>
                                 <span class="post-nav-item">下一篇</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -584,8 +845,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
-        <div class="page-title">Java String 底层数组 JDK8 到 JDK9 的变化</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK8%E7%9A%84String%E5%BA%95%E5%B1%82%E6%95%B0%E7%BB%84"><span class="nav-text">JDK8的String底层数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK9%E7%9A%84String%E5%BA%95%E5%B1%82%E6%95%B0%E7%BB%84"><span class="nav-text">JDK9的String底层数组</span></a></li></ol>
+        <div class="page-title">浅谈垃圾回收器的前世今生</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E5%8F%A4%E6%97%B6%E6%9C%9F%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E4%BB%AC"><span class="nav-text">上古时期的垃圾回收器们</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Serial-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-text">Serial 垃圾回收器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parallel-Scavenge"><span class="nav-text">Parallel Scavenge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMS%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-text">CMS垃圾回收器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ParNew-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-text">ParNew 垃圾回收器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E6%97%B6%E4%BB%A3%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E4%BB%AC"><span class="nav-text">新时代的垃圾回收器们</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A9%E5%A4%96%E6%9D%A5%E5%AE%A2-G1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-text">天外来客-G1垃圾回收器</span></a></li></ol></li></ol>
 
     </div>
 </div>
