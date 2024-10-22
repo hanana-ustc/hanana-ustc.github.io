@@ -13,23 +13,25 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://hanana-ustc.github.io/2024/01/23/java_string_array/"/>
+    <link rel="canonical" href="https://hanana-ustc.github.io/2023/12/27/spring_aop/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="String 底层数组在JDK8到JDK9进行了一次小小的变动，这项变动对String所占字节数分析稍有影响。本文将从源码分析这次变动。">
+        <meta name="description" content="一直理解不好Spring AOP，本文用简单易懂的描述什么是Spring AOP。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java String 底层数组 JDK8 到 JDK9 的变化">
-<meta property="og:url" content="https://hanana-ustc.github.io/2024/01/23/java_string_array/index.html">
+<meta property="og:title" content="简要理解Spring AOP">
+<meta property="og:url" content="https://hanana-ustc.github.io/2023/12/27/spring_aop/index.html">
 <meta property="og:site_name" content="hanana">
-<meta property="og:description" content="String 底层数组在JDK8到JDK9进行了一次小小的变动，这项变动对String所占字节数分析稍有影响。本文将从源码分析这次变动。">
+<meta property="og:description" content="一直理解不好Spring AOP，本文用简单易懂的描述什么是Spring AOP。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-01-23T03:20:51.000Z">
-<meta property="article:modified_time" content="2024-10-01T16:34:38.703Z">
+<meta property="og:image" content="https://pdai.tech/images/spring/springframework/spring-framework-aop-2.png">
+<meta property="article:published_time" content="2023-12-27T12:33:36.000Z">
+<meta property="article:modified_time" content="2024-10-22T15:34:37.257Z">
 <meta property="article:author" content="hanana">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pdai.tech/images/spring/springframework/spring-framework-aop-2.png">
     
     
     <!--- Icon Part-->
@@ -41,7 +43,7 @@
     
     <title>
         
-            Java String 底层数组 JDK8 到 JDK9 的变化 -
+            简要理解Spring AOP -
         
         hanana的知识小屋
     </title>
@@ -383,10 +385,10 @@
             
                 
                 
-                <img src="/images/java_pic3.png" alt="Java String 底层数组 JDK8 到 JDK9 的变化" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                <img src="/images/go_pic5.jpg" alt="简要理解Spring AOP" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
                 
                 <div class="w-full flex items-center absolute bottom-0 justify-start">
-                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">Java String 底层数组 JDK8 到 JDK9 的变化</h1>
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">简要理解Spring AOP</h1>
                 </div>
             
             </div>
@@ -407,15 +409,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-01-23 11:20:51</span>
-        <span class="mobile">2024-01-23 11:20:51</span>
+        <span class="desktop">2023-12-27 20:33:36</span>
+        <span class="mobile">2023-12-27 20:33:36</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-10-02 00:34:38</span>
-            <span class="mobile">2024-10-02 00:34:38</span>
+            <span class="desktop">2024-10-22 23:34:37</span>
+            <span class="mobile">2024-10-22 23:34:37</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -465,27 +467,41 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h2 id="JDK8的String底层数组"><a href="#JDK8的String底层数组" class="headerlink" title="JDK8的String底层数组"></a>JDK8的String底层数组</h2><p>JDK8 String底层数组为char数组，而char作为基本数据类型，在Java中占用2字节。我们可以笼统的分析字符串所占字节数为<code>字符串长度*2 B</code>.</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">String</span> <span class="keyword">implements</span> <span class="title class_">java</span>.io.Serializable, Comparable&lt;String&gt;, CharSequence &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">char</span> value[];</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+            <h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>就是将分散在各个业务逻辑代码中相同的代码通过<strong>横向切割</strong>的方式抽取到一个独立的模块中。</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pdai.tech/images/spring/springframework/spring-framework-aop-2.png"
+                      alt="img" style="zoom: 80%;" 
+                >
 
-<h2 id="JDK9的String底层数组"><a href="#JDK9的String底层数组" class="headerlink" title="JDK9的String底层数组"></a>JDK9的String底层数组</h2><p>JDK9 String底层数组为byte数组，而byte作为基本数据类型，在Java中占用1字节。</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">String</span></span><br><span class="line">    <span class="keyword">implements</span> <span class="title class_">java</span>.io.Serializable, Comparable&lt;String&gt;, CharSequence,</span><br><span class="line">               Constable, ConstantDesc &#123;</span><br><span class="line">    <span class="meta">@Stable</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">byte</span>[] value;</span><br></pre></td></tr></table></figure></div>
 
-<p>对于JDK 9 这项改动，Open JDK 所给出的解释是，考虑到大部分情况下，字符串内元素一般都为英文字符，而英文字符只需Latin-1编码方式即可，此时占用空间为1B，这样能够节省一半的空间；但对于有例如汉字等复杂字符，则采用UTF-16编码方式，此时占用空间为2B。</p>
-<p>为了在常用情况下能够节省点空间，Open JDK最终做出了这样的改动。</p>
-<p>因此对于字符串所占空间分析应该从两种情况进行考虑：</p>
+
+
+
+<h5 id="AOP术语"><a href="#AOP术语" class="headerlink" title="AOP术语"></a>AOP术语</h5><p>初看这么多术语，一下子都不好接受，慢慢来，很快就会搞懂。</p>
 <ul>
-<li>仅有英文字符等简单字符：<code>字符串长度 * 1 B</code></li>
-<li>含有汉字等复杂字符：<code>字符串长度 * 2 B</code></li>
+<li><strong>通知：</strong>就是你想要的功能，也就是上面说的 安全，事物，日志等。你给先定义好把，然后在想用的地方用一下。</li>
+<li><strong>连接点：</strong>这个更好解释了，就是spring允许你使用通知的地方，那可真就多了，基本每个方法的前，后（两者都有也行），或抛出异常时都可以是连接点，spring只支持方法连接点.其他如aspectJ还可以让你在构造器或属性注入时都行，不过那不是咱关注的，只要记住，和方法有关的前前后后（抛出异常），都是连接点。</li>
+<li><strong>切入点：</strong>上面说的连接点的基础上，来定义切入点，你的一个类里，有15个方法，那就有几十个连接点了对把，但是你并不想在所有方法附近都使用通知（使用叫织入，以后再说），你只想让其中的几个，在调用这几个方法之前，之后或者抛出异常时干点什么，那么就用切点来定义这几个方法，让切点来筛选连接点，选中那几个你想要的方法。</li>
+<li><strong>切面：</strong>切面是通知和切入点的结合。现在发现了吧，没连接点什么事情，连接点就是为了让你好<strong>理解</strong>切点，搞出来的，明白这个<strong>概念</strong>就行了。通知说明了干什么和什么时候干（什么时候通过方法名中的before,after，around等就能知道），而切入点说明了在哪干（指定到底是哪个方法），这就是一个完整的切面定义。</li>
+<li><strong>引入：</strong>允许我们向现有的类添加新方法属性。这不就是把切面（也就是新方法属性：通知定义的）用到目标类中吗。</li>
+<li><strong>目标：</strong>引入中所提到的目标类，也就是要被通知的对象，也就是真正的业务逻辑，他可以在毫不知情的情况下，被咱们织入切面。而自己专注于业务本身的逻辑。</li>
+<li><strong>代理：</strong>怎么实现整套aop机制的，都是通过代理，这个一会给细说。</li>
+<li><strong>织入：</strong>把切面应用到目标对象来创建新的代理对象的过程。有3种方式，spring采用的是运行时，为什么是运行时，后面解释。</li>
 </ul>
+<h5 id="AOP实现原理"><a href="#AOP实现原理" class="headerlink" title="AOP实现原理"></a>AOP实现原理</h5><p><strong>spring用代理类包裹切面，把他们织入到Spring管理的bean中</strong>。也就是说代理类伪装成目标类，它会截取对目标类中方法的调用，<strong>让调用者对目标类的调用都先变成调用伪装类</strong>，伪装类中就先执行了切面，再把调用转发给真正的目标bean。</p>
+<p>现在可以自己想一想，怎么搞出来这个伪装类，才不会被调用者发现（过JVM的检查，JAVA是强类型检查，哪里都要检查类型）。</p>
+<p><strong>JDK动态代理</strong></p>
+<p><strong>实现和目标类相同的接口</strong>，我也实现和你一样的接口，反正上层都是接口级别的调用，这样我就伪装成了和目标类一样的类（实现了同一接口，咱是兄弟了），也就逃过了类型检查，到java运行期的时候，利用多态的后期绑定（所以spring采用运行时），伪装类（代理类）就变成了接口的真正实现，而他里面包裹了真实的那个目标类，最后实现具体功能的还是目标类，只不过伪装类在之前干了点事情（写日志，安全检查，事物等）。</p>
+<p>这就好比，一个人让你办件事，每次这个时候，你弟弟就会先出来，当然他分不出来了，以为是你，你这个弟弟虽然办不了这事，但是他知道你能办，所以就答应下来了，并且收了点礼物（写日志），收完礼物了，给把事给人家办了啊，所以你弟弟又找你这个哥哥来了，最后把这是办了的还是你自己。但是你自己并不知道你弟弟已经收礼物了，你只是专心把这件事情做好。</p>
+<p>顺着这个思路想，要是本身这个类就没实现一个接口呢，你怎么伪装我，我就压根没有机会让你搞出这个双胞胎的弟弟，那么就用第2种代理方式，创建一个目标类的子类，生个儿子，让儿子伪装我.</p>
 <blockquote>
-<p>ps：那对于更为复杂的字符例如表情符号😀，Java String 是如何计算字符串长度的？</p>
-<p>其实与第二种情况相同，String 会当成UTF-16来处理UTF-8mb4表情符号。</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;😀&quot;</span>;</span><br><span class="line">    System.out.println(str.length()); <span class="comment">//输出结果为2,可以看到在处理字符串长度时按UTF-16处理</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;你&quot;</span>;</span><br><span class="line">    System.out.println(str.length()); <span class="comment">//输出结果为1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
+<p>spring会使用JDK的java.lang.reflect.Proxy类，它允许Spring动态生成一个新类来实现必要的接口，织入通知，并且把对这些接口的任何调用都转发到目标类。</p>
 </blockquote>
+<p><strong>Cglib</strong></p>
+<p><strong>生成子类调用，这次用子类来做为伪装类</strong>，当然这样也能逃过JVM的强类型检查，我继承的吗，当然查不出来了，<strong>子类重写了目标类的所有方法，当然在这些重写的方法中，不仅实现了目标类的功能，还在这些功能之前，实现了一些其他的（写日志，安全检查，事物等）。</strong></p>
+<p>这次的对比就是，儿子先从爸爸那把本事都学会了，所有人都找儿子办事情，但是儿子每次办和爸爸同样的事之前，都要收点小礼物（写日志），然后才去办真正的事。当然爸爸是不知道儿子这么干的了。这里就有件事情要说，某些本事是爸爸独有的(final的)，儿子学不了，学不了就办不了这件事，办不了这个事情，自然就不能收人家礼了。</p>
 
         </div>
 
@@ -493,18 +509,18 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>标题:</strong> Java String 底层数组 JDK8 到 JDK9 的变化</li>
+        <li><strong>标题:</strong> 简要理解Spring AOP</li>
         <li><strong>作者:</strong> hanana</li>
         <li><strong>创建于
-                :</strong> 2024-01-23 11:20:51</li>
+                :</strong> 2023-12-27 20:33:36</li>
         
             <li>
                 <strong>更新于
-                    :</strong> 2024-10-02 00:34:38
+                    :</strong> 2024-10-22 23:34:37
             </li>
         
         <li>
-            <strong>链接:</strong> https://hanana-ustc.github.io/2024/01/23/java_string_array/
+            <strong>链接:</strong> https://hanana-ustc.github.io/2023/12/27/spring_aop/
         </li>
         <li>
             <strong>
@@ -540,33 +556,18 @@
                     <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="prev"
                         rel="prev"
-                        href="/2024/02/10/java_concurrent_hashmap/"
+                        href="/2023/12/27/java_generics/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Java ConcurrentHashMap 为什么 key 与 value 不能为 null？</span>
+                                <span class="post-nav-title-item">Java泛型机制探讨</span>
                                 <span class="post-nav-item">上一篇</span>
                             </span>
                         </a>
                     </div>
                 
-                
-                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="next"
-                        rel="next"
-                        href="/2024/01/12/gc/"
-                        >
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">浅谈垃圾回收器的前世今生</span>
-                                <span class="post-nav-item">下一篇</span>
-                            </span>
-                            <span class="right arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                    </div>
                 
             </div>
         
@@ -580,8 +581,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
-        <div class="page-title">Java String 底层数组 JDK8 到 JDK9 的变化</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK8%E7%9A%84String%E5%BA%95%E5%B1%82%E6%95%B0%E7%BB%84"><span class="nav-text">JDK8的String底层数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK9%E7%9A%84String%E5%BA%95%E5%B1%82%E6%95%B0%E7%BB%84"><span class="nav-text">JDK9的String底层数组</span></a></li></ol>
+        <div class="page-title">简要理解Spring AOP</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP"><span class="nav-text">AOP</span></a></li></ol>
 
     </div>
 </div>

@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="hanana">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://hanana-ustc.github.io/2024/02/12/java_new/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="简单归纳Java新特性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java新特性一览">
+<meta property="og:url" content="https://hanana-ustc.github.io/2024/02/12/java_new/index.html">
+<meta property="og:site_name" content="hanana">
+<meta property="og:description" content="简单归纳Java新特性。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hanana-ustc.github.io/images/001.png">
+<meta property="og:image" content="https://hanana-ustc.github.io/images/002.png">
+<meta property="article:published_time" content="2024-02-12T05:33:31.000Z">
+<meta property="article:modified_time" content="2024-10-22T15:24:56.005Z">
+<meta property="article:author" content="hanana">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hanana-ustc.github.io/images/001.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Java新特性一览 -
+        
+        hanana的知识小屋
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        hanana的知识小屋
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"hanana-ustc.github.io","root":"/","language":"zh-CN"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null},"highlight_theme":{"light":"github","dark":"vs2015"}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null},"title":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":{"enable":false,"custom_message":null},"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"hanana的知识小屋","subtitle":{"text":["与其感慨路难行，不如马上出发"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn","show_author":false},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null},"style":"default"}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true},"width":{"home":"1200px","pages":"1000px"}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null,"show_on_mobile":true},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3},"excerpt_length":200},"footerStart":"2023/9/17 11:45:14"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                hanana的知识小屋
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/images/go_pic3.png" alt="Java新特性一览" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">Java新特性一览</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/yela.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">hanana</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-02-12 13:33:31</span>
+        <span class="mobile">2024-02-12 13:33:31</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-10-22 23:24:56</span>
+            <span class="mobile">2024-10-22 23:24:56</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/java/">java</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/java/">java</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h3 id="java8关键特性"><a href="#java8关键特性" class="headerlink" title="java8关键特性"></a>java8关键特性</h3><ul>
+<li><p>lambda表达式<br>lambda表达式为接口提供一个方法用来实现。</p>
+<p>Lambda表达式的具体规范：</p>
+<ul>
+<li>标准格式为：([参数类型 参数名称,]…) ‐&gt; { 代码语句，包括返回值 }</li>
+<li>和匿名内部类不同，Lambda仅支持接口，不支持抽象类</li>
+<li>接口内部必须有且仅有一个抽象方法（可以有多个方法，但是必须保证其他方法有默认实现，必须留一个抽象方法出来）</li>
+</ul>
+<p>对于一个仅有一个方法需要实现的接口，可以使用lambda表达式实现这个接口。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Test</span> &#123;   <span class="comment">//接口类型</span></span><br><span class="line">    String <span class="title function_">test</span><span class="params">(Integer i)</span>;    <span class="comment">//只有这一个抽象方法，且接受一个int类型参数，返回一个String类型结果</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//有且仅有一个参数省略括号。仅有一句return语句省略大括号。</span></span><br><span class="line">Test test=i -&gt; i + <span class="string">&quot;&quot;</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>  接口的实现除了自己手动实现外，若其他类中有相同作用的方法能够实现接口可以直接进行引用。</p>
+<p>  标准格式为：类名::方法名   &#x2F;&#x2F;静态方法<br>             实例名::方法名 &#x2F;&#x2F;非静态方法</p>
+  <div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Test</span> &#123;   <span class="comment">//接口类型</span></span><br><span class="line">    String <span class="title function_">test</span><span class="params">(Integer i)</span>;    <span class="comment">//只有这一个抽象方法，且接受一个int类型参数，返回一个String类型结果</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h2 id="采用Main类的方法实现接口"><a href="#采用Main类的方法实现接口" class="headerlink" title="  采用Main类的方法实现接口:  "></a>  采用Main类的方法实现接口:<br>  <div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"><span class="type">Test</span> <span class="variable">test</span> <span class="operator">=</span> Main::impl;    <span class="comment">//使用 类名::方法名称 的形式来直接引用一个已有的方法作为实现</span></span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">impl</span><span class="params">(Integer i)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;我是已经存在的实现&quot;</span>+i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></h2></li>
+<li><p>optional类<br>为了更好的处理空指针，java8提供了optional类。</p>
+<p>对于常规判空问题我们一般这样写：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">(String str)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(str != <span class="literal">null</span>) &#123;</span><br><span class="line">      System.out.println(str.toLowerCase());</span><br><span class="line">  &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>这一点都不优雅！所以optional类应运而生：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">(String str)</span>&#123;</span><br><span class="line">  <span class="comment">//将str包装进Optional。ifPresent表示只有对象不为null才会执行里面的逻辑，实现一个Consumer（接受一个参数，返回值为void）</span></span><br><span class="line">  optional.ofNullable(str).ifPresent(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>除了在不为空时执行的操作外，还可以直接从Optional中获取被包装的对象：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//为空会抛出异常</span></span><br><span class="line">System.out.println(Optional.ofNullable(str).get());</span><br><span class="line"></span><br><span class="line">System.out.println(Optional.ofNullable(str).orElse(<span class="string">&quot;str is null&quot;</span>));   <span class="comment">//orElse表示如果为空就返回里面的内容</span></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<hr>
+<h3 id="java9关键特性"><a href="#java9关键特性" class="headerlink" title="java9关键特性"></a>java9关键特性</h3><ul>
+<li><p>模块机制</p>
+<p>Java 9 引入了一个重大的新特性，即模块化机制，它被称为 Java Platform Module System（JPMS）。模块化机制的目的是解决 Java 应用程序的可扩展性和复杂性问题。它大大减少了应用程序依赖库的大小。</p>
+<p>在 Java 9 中，模块由 module-info.java 文件定义，其中包含模块的名称、依赖项和导出的公共接口。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> com.example.mymodule &#123;</span><br><span class="line">    <span class="keyword">requires</span> java.base; <span class="comment">//指定所需要导入的模块</span></span><br><span class="line">    <span class="keyword">requires</span> transitive com.example.dependencymodule; <span class="comment">//指定所依赖的模块</span></span><br><span class="line">    <span class="keyword">exports</span> com.example.mymodule.package1; <span class="comment">//暴露给指定模块</span></span><br><span class="line">    <span class="keyword">exports</span> com.example.mymodule.package2 to com.example.othermodule; <span class="comment">//暴露给指定模块的指定目标</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>采用模块机制后，我们不能通过反射机制去获取其他模块信息。若想开放反射机制给某些模块，则需要添加<code>open</code>关键字：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">module</span>.a &#123;</span><br><span class="line">  <span class="keyword">exports</span> com.test to <span class="keyword">module</span>.b;</span><br><span class="line">  opens com.test;   <span class="comment">//通过使用opens关键字来为其他模块开放反射权限</span></span><br><span class="line">	<span class="comment">//也可以指定目标开放反射 opens com.test to module.b;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>JShell交互式编程</p>
+<p>JShell 是 Java 9 引入的一个交互式编程工具，它为开发人员提供了一个即时执行代码的环境，无需创建和编译完整的 Java 程序。它可以在命令行中直接输入和执行 Java 代码片段，并立即返回结果。所用语法仍然为java语法。(ps:好像解释性语言，但又不那么解释性。) </p>
+</li>
+<li><p>接口的private方法</p>
+<p>在java8中，接口可以使用关键字<code>default</code>定义默认方法:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">  <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span>&#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;我是test方法默认实现&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>在java9中接口再次得到大加强。可以在接口中定义private方法:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">  <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span>&#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;我是test方法默认实现&quot;</span>);</span><br><span class="line">      <span class="built_in">this</span>.inner();   <span class="comment">//接口中方法的默认实现可以直接调用接口中的私有方法</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">inner</span><span class="params">()</span>&#123;   <span class="comment">//声明一个私有方法</span></span><br><span class="line">      System.out.println(<span class="string">&quot;我是接口中的私有方法！&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>不过要注意接口的private方法必须要定义，否则它将无法被定义。</p>
+</li>
+<li><p>集合类新增工厂方法</p>
+<p>Java 9 引入了集合类的工厂方法，它们是一组静态方法，用于创建<strong>不可变</strong>的集合实例。这些工厂方法通过提供更简洁、安全和便捷的方式来创建集合对象。</p>
+<p>在java9之前，想要创建一个Map只能通过:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  Map&lt;String, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();   <span class="comment">//要快速使用Map，需要先创建一个Map对象，然后再添加数据</span></span><br><span class="line">  map.put(<span class="string">&quot;AAA&quot;</span>, <span class="number">19</span>);</span><br><span class="line">  map.put(<span class="string">&quot;BBB&quot;</span>, <span class="number">23</span>);</span><br><span class="line"></span><br><span class="line">  System.out.println(map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>在引入工厂方法后，创建不可变集合仅仅只需一步:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  Map&lt;String, Integer&gt; map = Map.of(<span class="string">&quot;AAA&quot;</span>, <span class="number">18</span>, <span class="string">&quot;BBB&quot;</span>, <span class="number">20</span>);  <span class="comment">//直接一句搞定</span></span><br><span class="line"></span><br><span class="line">  System.out.println(map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>当然，除了Map之外，其他的集合类都有相应的of方法：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  Set&lt;String&gt; set = Set.of(<span class="string">&quot;BBB&quot;</span>, <span class="string">&quot;CCC&quot;</span>, <span class="string">&quot;AAA&quot;</span>);  <span class="comment">//注意Set中元素顺序并不一定你的添加顺序</span></span><br><span class="line">  List&lt;String&gt; list = List.of(<span class="string">&quot;AAA&quot;</span>, <span class="string">&quot;CCC&quot;</span>, <span class="string">&quot;BBB&quot;</span>);   <span class="comment">//好耶，再也不用Arrays了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>改进的stream API</p>
+<p>Java 9 在 Stream API 中引入了一些改进，以提供更强大、更灵活的流式数据处理能力。Stream API 用于处理集合类元素的流式操作，使得数据的过滤、映射、归约等操作更加简洁和高效。</p>
+<p>stream API能够快速处理集合类元素：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  Stream</span><br><span class="line">          .of(<span class="string">&quot;A&quot;</span>, <span class="string">&quot;B&quot;</span>, <span class="string">&quot;B&quot;</span>, <span class="string">&quot;C&quot;</span>)   <span class="comment">//这里我们可以直接将一些元素封装到Stream中</span></span><br><span class="line">          .filter(s -&gt; s.equals(<span class="string">&quot;B&quot;</span>))   <span class="comment">//通过过滤器过滤</span></span><br><span class="line">          .distinct()   <span class="comment">//去重</span></span><br><span class="line">          .forEach(System.out::println);   <span class="comment">//最后打印</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>在java9中stream API得到进一步加强：</p>
+<ol>
+<li>新增的<code>ofNullable</code>方法,更好处理null:<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  Stream</span><br><span class="line">          .of(<span class="literal">null</span>)   <span class="comment">//如果传入null会报错</span></span><br><span class="line">          .forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">  Stream</span><br><span class="line">          .ofNullable(<span class="literal">null</span>) <span class="comment">//使用新增的ofNullable方法，这样就不会了，不过这样的话流里面就没东西了</span></span><br><span class="line">          .forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li>更加实用的迭代器<code>iterate</code>:<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  Stream</span><br><span class="line">          .iterate(<span class="number">0</span>, i -&gt; i + <span class="number">1</span>)   <span class="comment">//Java8只能像这样生成无限的流，第一个参数是种子，就是后面的UnaryOperator的参数i一开始的值，最后会返回一个值作为i的新值，每一轮都会执行UnaryOperator并生成一个新值到流中，这个是源源不断的，如果不加limit()进行限制的话，将无限生成下去。</span></span><br><span class="line">    			.limit(<span class="number">20</span>)   <span class="comment">//这里限制生成20个</span></span><br><span class="line">          .forEach(System.out::println); </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  Stream</span><br><span class="line">          <span class="comment">//不知道怎么写？参考一下：for (int i = 0;i &lt; 20;i++)</span></span><br><span class="line">          .iterate(<span class="number">0</span>, i -&gt; i &lt; <span class="number">20</span>, i -&gt; i + <span class="number">1</span>)  <span class="comment">//快速生成一组0~19的int数据，中间可以添加一个断言，表示什么时候结束生成</span></span><br><span class="line">          .forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li>新增截断操作,比<code>filter</code>更好处理某些特定情况:<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  Stream</span><br><span class="line">          .iterate(<span class="number">0</span>, i -&gt; i + <span class="number">1</span>)</span><br><span class="line">          .limit(<span class="number">20</span>)</span><br><span class="line">          .takeWhile(i -&gt; i &lt; <span class="number">10</span>)   <span class="comment">//当i小于10时正常通过，一旦大于等于10直接截断</span></span><br><span class="line">          .forEach(System.out::println);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  Stream</span><br><span class="line">          .iterate(<span class="number">0</span>, i -&gt; i + <span class="number">1</span>)</span><br><span class="line">          .limit(<span class="number">20</span>)</span><br><span class="line">          .dropWhile(i -&gt; i &lt; <span class="number">10</span>)   <span class="comment">//和上面相反，上来就是截断状态，只有当满足条件时再开始通过</span></span><br><span class="line">          .forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+</li>
+<li><p><code>try-with-resource</code>语句增强<br>java9中<code>try-with-resource</code>得到进一步加强，<code>try</code>语法无需再完整声明一个变量，可以先声明再使用<code>try</code>。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">  <span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> Files.newInputStream(Paths.get(<span class="string">&quot;pom.xml&quot;</span>));</span><br><span class="line">  <span class="keyword">try</span> (inputStream) &#123;   <span class="comment">//单独丢进try中，效果是一样的</span></span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">          System.out.print((<span class="type">char</span>) inputStream.read());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p><code>optional</code>类加强<br>java9为<code>optional</code>类判空操作提供了更加简便的格式。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">  Optional.ofNullable(str).ifPresentOrElse(s -&gt; &#123;  <span class="comment">//通过使用ifPresentOrElse，我们同时处理两种情况</span></span><br><span class="line">      System.out.println(<span class="string">&quot;被包装的元素为：&quot;</span>+s);     <span class="comment">//第一种情况和ifPresent是一样的</span></span><br><span class="line">  &#125;, () -&gt; &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;被包装的元素为null&quot;</span>);   <span class="comment">//第二种情况是如果为null的情况</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>也可以使用<code>or()</code>替换为空时的<code>optional</code>类:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">  Optional.ofNullable(str)</span><br><span class="line">    .or(() -&gt; Optional.of(<span class="string">&quot;AAA&quot;</span>))   <span class="comment">//如果当前被包装的类不是null，依然返回自己，但是如果是null，那就返回Supplier提供的另一个Optional包装</span></span><br><span class="line">    .ifPresent(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>钻石运算符<code>&lt;&gt;</code>进行自动类型推断</p>
+<p>java9终于可以进行匿名函数的自动类型推断了。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Test</span>&lt;T&gt;&#123;   <span class="comment">//这里我们写一个泛型类</span></span><br><span class="line">  <span class="keyword">public</span> T t;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Test</span><span class="params">(T t)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.t = t;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">abstract</span> T <span class="title function_">test</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>我们可以使用钻石运算符<code>&lt;&gt;</code>进行自动类型推断:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">  Test&lt;String&gt; test = <span class="keyword">new</span> <span class="title class_">Test</span>&lt;&gt;(<span class="string">&quot;AAA&quot;</span>) &#123;   <span class="comment">//在低版本这样写是会直接报错的，因为匿名内部类不支持自动类型推断，但是很明显我们这里给的参数是String类型的，所以明明有机会进行类型推断，却还是要我们自己填类型，就很蠢</span></span><br><span class="line">    <span class="comment">//在Java 9之后，这样的写法终于可以编译通过了</span></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="keyword">public</span> String <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> t;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<hr>
+<h3 id="java10关键特性"><a href="#java10关键特性" class="headerlink" title="java10关键特性"></a>java10关键特性</h3><ul>
+<li><p>局部变量类型自动推断</p>
+<p>java10后局部变量类型终于可以自动推断了，java越来越智能。使用关键字<code>var</code>即可定义自动推断的局部变量:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="comment">// String a = &quot;Hello World!&quot;;   之前我们定义变量必须指定类型</span></span><br><span class="line">  <span class="type">var</span> <span class="variable">a</span> <span class="operator">=</span> <span class="string">&quot;Hello World!&quot;</span>;   <span class="comment">//现在我们使用var关键字来自动进行类型推断，因为完全可以从后面的值来判断是什么类型</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p><strong>注意：仅仅能够对局部变量类型自动推断，但类的成员变量则不能使用<code>var</code></strong></p>
+</li>
+</ul>
+<h3 id="java11关键特性"><a href="#java11关键特性" class="headerlink" title="java11关键特性"></a>java11关键特性</h3><ul>
+<li><p>lambda表达式变量类型自动推断</p>
+<p>java11中lambda表达式也可以使用关键字<code>var</code>自动推断变量类型了。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">  <span class="comment">//可以直接推断出变量类型</span></span><br><span class="line">  Consumer consumer=(<span class="keyword">var</span> str) -&gt; &#123;</span><br><span class="line"></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+<li><p>String类方法进一步增强</p>
+<p>java11中队String类方法进行了进一步的加强，更加便于操作String类型。</p>
+<p><code>isBlank()</code>判断字符串是否为空或仅仅包含空格；<code>lines()</code>根据字符串中的换行符进行切割:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">var</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;AB\nC\nD&quot;</span>;</span><br><span class="line">  System.out.println(str.isBlank());    <span class="comment">//isBlank方法用于判断是否字符串为空或者是仅包含空格</span></span><br><span class="line">  str</span><br><span class="line">          .lines()   <span class="comment">//根据字符串中的\n换行符进行切割，分为多个字符串，并转换为Stream进行操作</span></span><br><span class="line">          .forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p><code>repeat()</code>重复复制字符串:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;ABCD&quot;</span>;   <span class="comment">//比如现在我们有一个ABCD，但是现在我们想要一个ABCDABCD这样的基于原本字符串的重复字符串</span></span><br><span class="line">  System.out.println(str.repeat(<span class="number">2</span>));  <span class="comment">//一个repeat就搞定了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>各种去空格操作:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">  <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot; A B C D &quot;</span>;</span><br><span class="line">  System.out.println(str.strip());   <span class="comment">//去除首尾空格</span></span><br><span class="line">  System.out.println(str.stripLeading());  <span class="comment">//去除首部空格</span></span><br><span class="line">  System.out.println(str.stripTrailing());   <span class="comment">//去除尾部空格</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>全新的HttpClient操作</p>
+<h2 id="在Java-9的时候其实就已经引入了全新的Http-Client-API，用于取代之前比较老旧的HttpURLConnection类，新的API支持最新的HTTP2和WebSocket协议。"><a href="#在Java-9的时候其实就已经引入了全新的Http-Client-API，用于取代之前比较老旧的HttpURLConnection类，新的API支持最新的HTTP2和WebSocket协议。" class="headerlink" title="在Java 9的时候其实就已经引入了全新的Http Client API，用于取代之前比较老旧的HttpURLConnection类，新的API支持最新的HTTP2和WebSocket协议。"></a>在Java 9的时候其实就已经引入了全新的Http Client API，用于取代之前比较老旧的HttpURLConnection类，新的API支持最新的HTTP2和WebSocket协议。<br><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> URISyntaxException, IOException, InterruptedException &#123;</span><br><span class="line">  <span class="type">HttpClient</span> <span class="variable">client</span> <span class="operator">=</span> HttpClient.newHttpClient();   <span class="comment">//直接创建一个新的HttpClient</span></span><br><span class="line">	<span class="comment">//现在我们只需要构造一个Http请求实体，就可以让客户端帮助我们发送出去了（实际上就跟浏览器访问类似）</span></span><br><span class="line">  <span class="type">HttpRequest</span> <span class="variable">request</span> <span class="operator">=</span> HttpRequest.newBuilder().uri(<span class="keyword">new</span> <span class="title class_">URI</span>(<span class="string">&quot;https://www.baidu.com&quot;</span>)).build();</span><br><span class="line">	<span class="comment">//现在我们就可以把请求发送出去了，注意send方法后面还需要一个响应体处理器（内置了很多）这里我们选择ofString直接吧响应实体转换为String字符串</span></span><br><span class="line">  HttpResponse&lt;String&gt; response = client.send(request, HttpResponse.BodyHandlers.ofString());</span><br><span class="line">	<span class="comment">//来看看响应实体是什么吧</span></span><br><span class="line">  System.out.println(response.body());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></h2></li>
+</ul>
+<h3 id="java12-17关键特性"><a href="#java12-17关键特性" class="headerlink" title="java12-17关键特性"></a>java12-17关键特性</h3><ul>
+<li><p>新的<code>switch</code>语法</p>
+<p>在Java 12引入全新的switch语法，让我们使用switch语句更加的灵活，比如我们想要编写一个根据成绩得到等级的方法：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">grade</span><span class="params">(<span class="type">int</span> score)</span>&#123;</span><br><span class="line">  score /= <span class="number">10</span>;  <span class="comment">//既然分数段都是整数，那就直接整除10</span></span><br><span class="line">	<span class="type">String</span> <span class="variable">res</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">switch</span> (score) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">10</span>:</span><br><span class="line">      <span class="keyword">case</span> <span class="number">9</span>:</span><br><span class="line">          res =  <span class="string">&quot;优秀&quot;</span>;   <span class="comment">//不同的分数段就可以返回不同的等级了</span></span><br><span class="line">      		<span class="keyword">break</span>;   <span class="comment">//别忘了break，不然会贯穿到后面</span></span><br><span class="line">      <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">      <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">          res = <span class="string">&quot;良好&quot;</span>;</span><br><span class="line">      		<span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">          res = <span class="string">&quot;及格&quot;</span>;</span><br><span class="line">      		<span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">          res = <span class="string">&quot;不及格&quot;</span>;</span><br><span class="line">      		<span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>是不是感觉很乱很复杂，一点都不优雅。当我们采用全新的<code>switch</code>语法后一切都变得简单起来:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">grade</span><span class="params">(<span class="type">int</span> score)</span>&#123;</span><br><span class="line">  score /= <span class="number">10</span>;  <span class="comment">//既然分数段都是整数，那就直接整除10</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">switch</span> (score) &#123;   <span class="comment">//增强版switch语法</span></span><br><span class="line">      <span class="keyword">case</span> <span class="number">10</span>, <span class="number">9</span> -&gt; <span class="string">&quot;优秀&quot;</span>;   <span class="comment">//语法那是相当的简洁，而且也不需要我们自己考虑break或是return来结束switch了（有时候就容易忘记，这样的话就算忘记也没事了）</span></span><br><span class="line">      <span class="keyword">case</span> <span class="number">8</span>, <span class="number">7</span> -&gt; <span class="string">&quot;良好&quot;</span>; </span><br><span class="line">      <span class="keyword">case</span> <span class="number">6</span> -&gt; <span class="string">&quot;及格&quot;</span>;</span><br><span class="line">      <span class="keyword">default</span> -&gt; <span class="string">&quot;不及格&quot;</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>这种全新的switch语法称为switch表达式，它的意义不仅仅体现在语法的精简上，我们来看看它的详细规则：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">var</span> <span class="variable">res</span> <span class="operator">=</span> <span class="keyword">switch</span> (obj) &#123;   <span class="comment">//这里和之前的switch语句是一样的，但是注意这样的switch是有返回值的，所以可以被变量接收</span></span><br><span class="line">  <span class="keyword">case</span> [匹配值, ...] -&gt; <span class="string">&quot;优秀&quot;</span>;   <span class="comment">//case后直接添加匹配值，匹配值可以存在多个，需要使用逗号隔开，使用 -&gt; 来返回如果匹配此case语句的结果</span></span><br><span class="line">  <span class="keyword">case</span> ...   <span class="comment">//根据不同的分支，可以存在多个case</span></span><br><span class="line">  <span class="keyword">default</span> -&gt; <span class="string">&quot;不及格&quot;</span>;   <span class="comment">//注意，表达式要求必须涵盖所有的可能，所以是需要添加default的</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<p>那么如果我们并不是能够马上返回，而是需要做点什么其他的工作才能返回结果呢？</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">var</span> <span class="variable">res</span> <span class="operator">=</span> <span class="keyword">switch</span> (obj) &#123;   <span class="comment">//增强版switch语法</span></span><br><span class="line">  <span class="keyword">case</span> [匹配值, ...] -&gt; <span class="string">&quot;优秀&quot;</span>;</span><br><span class="line">  <span class="keyword">default</span> -&gt; &#123;   <span class="comment">//我们可以使用花括号来将整套逻辑括起来</span></span><br><span class="line">      <span class="comment">//... 我是其他要做的事情</span></span><br><span class="line">      <span class="keyword">yield</span>  <span class="string">&quot;不及格&quot;</span>;  <span class="comment">//注意处理完成后需要返回最终结果，但是这样并不是使用return，而是yield关键字</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<p>这种全新的语法，可以说极大地方便了我们的编码，不仅代码简短，而且语义明确。唯一遗憾的是依然不支持区间匹配。</p>
+</li>
+<li><p>全新文本块机制<br>java13后引入了文本块机制，终于不需要面对一堆转义符号了，我们可以通过三引号来实现文本块:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> str=<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">          三引号内随便加&#x27;&quot;.,;[]&#123;&#125;</span></span><br><span class="line"><span class="string">          甚至连换行符都会读进去</span></span><br><span class="line"><span class="string">          &quot;&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>仔细想想，这样我们写SQL或是HTML岂不是就舒服多了？</p>
+</li>
+<li><p>新的instanceof语法</p>
+<p>在Java 14，instanceof迎来了一波小更新，简化类型判断。</p>
+<p>比如我们之前要重写一个类的equals方法：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Student</span><span class="params">(String name)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.name = name;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">      <span class="keyword">if</span>(obj <span class="keyword">instanceof</span> Student) &#123;   <span class="comment">//首先判断是否为Student类型</span></span><br><span class="line">          <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> (Student) obj;  <span class="comment">//如果是，那么就类型转换</span></span><br><span class="line">          <span class="keyword">return</span> student.name.equals(<span class="built_in">this</span>.name);  <span class="comment">//最后比对属性是否一样</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>在之前我们一直都是采用这种先判断类型，然后类型转换，最后才能使用的方式，但是这个版本instanceof加强之后，我们就不需要了，我们可以直接将student替换为模式变量：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="title function_">Student</span><span class="params">(String name)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.name = name;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">      <span class="keyword">if</span>(obj <span class="keyword">instanceof</span> Student student) &#123;   <span class="comment">//在比较完成的屁股后面，直接写变量名字，而这个变量就是类型转换之后的</span></span><br><span class="line">          <span class="keyword">return</span> student.name.equals(<span class="built_in">this</span>.name);  <span class="comment">//下面直接用，是不是贼方便</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>在使用instanceof判断类型成立后，会自动强制转换类型为指定类型，简化了我们手动转换的步骤。</p>
+</li>
+<li><p>空指针异常的改进</p>
+<p>编写程序时经常遇到空指针异常报错，但涉及到多个变量可能空指针异常报错时，我们不好分别到底是哪个变量为空，而在后续java版本里空指针异常报错将会更加详细。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">(String a, String b)</span>&#123;</span><br><span class="line">  <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> a.length() + b.length();   <span class="comment">//可能给进来的a或是b为null</span></span><br><span class="line">  System.out.println(length);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>在老版本java中会这样报错:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/001.png"
+                      alt="001.png"
+                ><br>是不是不好判断到底是a还是b为空指针。新版本就没这个烦恼了:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/002.png"
+                      alt="002.png"
+                ><br>新版本异常报错更加详细，指定了b为空指针。</p>
+</li>
+<li><p>记录类型<br>java14首次定义了记录类型，这是继继承类、接口、枚举类与注解后又一新类类型。它的功能与lombok实现的功能差不多.</p>
+<p>在实际开发中，很多的类仅仅只是充当一个实体类罢了，保存的是一些不可变数据，比如我们从数据库中查询的账户信息，最后会被映射为一个实体类：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Account</span> &#123;   <span class="comment">//使用Lombok，一个注解就搞定了</span></span><br><span class="line">  String username;</span><br><span class="line">  String password;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>记录类型本质上也是一个普通的类，不过是final类型且继承自java.lang.Record抽象类的，它会在编译时，会自动编译出 <code>public</code> <code>get</code> <code>hashcode</code> 、<code>equals</code>、&#96;toString&#96;&#96; 等方法，好家伙，这是要逼死Lombok啊。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">record</span> <span class="title class_">Account</span><span class="params">(String username, String password)</span> &#123;  <span class="comment">//直接把字段写在括号中</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h3 id="java17关键特性"><a href="#java17关键特性" class="headerlink" title="java17关键特性"></a>java17关键特性</h3><ul>
+<li><p>密封类型</p>
+</li>
+<li><p>密封类型可以说是Java 17正式推出的又一重磅类型，它在Java 15首次提出并测试了两个版本。</p>
+<p>在Java中，我们可以通过继承（extends关键字）来实现类的能力复用、扩展与增强。但有的时候，可能并不是所有的类我们都希望能够被继承。所以，我们需要对继承关系有一些限制的控制手段，而密封类的作用就是限制类的继承。</p>
+<p>在没有密封类型前我们可以使用<code>final</code>关键字限制类的继承:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">A</span>&#123;   <span class="comment">//添加final关键字后，不允许对此类继承</span></span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>但是使用<code>final</code>关键字限制的类都不能进行继承，包括自己想能继承的类。要解决这个问题，密封类型孕育而生:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title class_">A</span> <span class="keyword">permits</span> B&#123;   <span class="comment">//在class关键字前添加sealed关键字，表示此类为密封类型，permits后面跟上允许继承的类型，多个子类使用逗号隔开</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>密封类型有以下要求：</p>
+<ul>
+<li>可以基于普通类、抽象类、接口，也可以是继承自其他接抽象类的子类或是实现其他接口的类等。</li>
+<li>必须有子类继承，且不能是匿名内部类或是lambda的形式。</li>
+<li>sealed写在原来final的位置，但是不能和final、non-sealed关键字同时出现，只能选择其一。</li>
+<li>继承的子类必须显式标记为final、sealed或是non-sealed类型。</li>
+</ul>
+<p>标准声明格式如下:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">sealed</span> [<span class="keyword">abstract</span>] [class/interface] 类名 [extends 父类] [implements 接口, ...] <span class="keyword">permits</span> [子类, ...]&#123;</span><br><span class="line"><span class="comment">//里面的该咋写咋写</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>子类格式为:</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> [<span class="keyword">final</span>/<span class="keyword">sealed</span>/<span class="keyword">non-sealed</span>] class 子类 extends 父类 &#123;   <span class="comment">//必须继承自父类</span></span><br><span class="line">	<span class="comment">//final类型：任何类不能再继承当前类，到此为止，已经封死了。</span></span><br><span class="line">		<span class="comment">//sealed类型：同父类，需要指定由哪些类继承。</span></span><br><span class="line">		<span class="comment">//non-sealed类型：重新开放为普通类，任何类都可以继承。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> Java新特性一览</li>
+        <li><strong>作者:</strong> hanana</li>
+        <li><strong>创建于
+                :</strong> 2024-02-12 13:33:31</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-10-22 23:24:56
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://hanana-ustc.github.io/2024/02/12/java_new/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/java/">#java</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/02/12/go_lru/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Go 实现简易 LRU 队列</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/02/10/java_concurrent_hashmap/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Java ConcurrentHashMap 为什么 key 与 value 不能为 null？</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">Java新特性一览</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#java8%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="nav-text">java8关键特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%87%E7%94%A8Main%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0%E6%8E%A5%E5%8F%A3"><span class="nav-text">  采用Main类的方法实现接口:  12345678public static void main(String[] args) {Test test &#x3D; Main::impl;    &#x2F;&#x2F;使用 类名::方法名称 的形式来直接引用一个已有的方法作为实现}  public static String impl(Integer i){    return &quot;我是已经存在的实现&quot;+i;}</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#java9%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="nav-text">java9关键特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java10%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="nav-text">java10关键特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java11%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="nav-text">java11关键特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8Java-9%E7%9A%84%E6%97%B6%E5%80%99%E5%85%B6%E5%AE%9E%E5%B0%B1%E5%B7%B2%E7%BB%8F%E5%BC%95%E5%85%A5%E4%BA%86%E5%85%A8%E6%96%B0%E7%9A%84Http-Client-API%EF%BC%8C%E7%94%A8%E4%BA%8E%E5%8F%96%E4%BB%A3%E4%B9%8B%E5%89%8D%E6%AF%94%E8%BE%83%E8%80%81%E6%97%A7%E7%9A%84HttpURLConnection%E7%B1%BB%EF%BC%8C%E6%96%B0%E7%9A%84API%E6%94%AF%E6%8C%81%E6%9C%80%E6%96%B0%E7%9A%84HTTP2%E5%92%8CWebSocket%E5%8D%8F%E8%AE%AE%E3%80%82"><span class="nav-text">在Java 9的时候其实就已经引入了全新的Http Client API，用于取代之前比较老旧的HttpURLConnection类，新的API支持最新的HTTP2和WebSocket协议。123456789public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {  HttpClient client &#x3D; HttpClient.newHttpClient();   &#x2F;&#x2F;直接创建一个新的HttpClient	&#x2F;&#x2F;现在我们只需要构造一个Http请求实体，就可以让客户端帮助我们发送出去了（实际上就跟浏览器访问类似）  HttpRequest request &#x3D; HttpRequest.newBuilder().uri(new URI(&quot;https:&#x2F;&#x2F;www.baidu.com&quot;)).build();	&#x2F;&#x2F;现在我们就可以把请求发送出去了，注意send方法后面还需要一个响应体处理器（内置了很多）这里我们选择ofString直接吧响应实体转换为String字符串  HttpResponse&lt;String&gt; response &#x3D; client.send(request, HttpResponse.BodyHandlers.ofString());	&#x2F;&#x2F;来看看响应实体是什么吧  System.out.println(response.body());}</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#java12-17%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="nav-text">java12-17关键特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java17%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="nav-text">java17关键特性</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">hanana</a>
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.0</a></span>
+        </div>
+        
+        
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
